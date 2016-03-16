@@ -65,7 +65,7 @@ public class CmdTextMessageHandle extends TextMesageHandle {
 		if(!isMe(msg)){
 			return false;
 		}
-		if(!this.filterMessage(msg)){
+		if(this.filterMessage(msg)){
 			return false;
 		}
 		String fromUserID=MessageUtil.getFromUserID(msg);

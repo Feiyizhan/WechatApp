@@ -75,7 +75,7 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 							String userName = getHandle().getSession().getUserName(id, null);
 							names.add(userName);
 							LOGGER.debug("[*] "+id + "|"+userName);
-							if(count >=70){
+							if(count >=40){
 								count =0;
 								getHandle().getSession().webwxsendmsg(names.toString()+"\n",fromUserID);
 								names = new ArrayList<String>();
@@ -141,7 +141,7 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 			memberList.add(member);
 			LOGGER.debug("[*]"+id +"|"+UserUtil.getUserRemarkName(obj));
 			count ++ ;
-			if (count>=35){
+			if (count>=30){
 				processedCount +=count;
 				this.sendTextMessage("【系统消息】\n当前已处理【"+processedCount+"】个联系人，还有【"+(maxCount-processedCount)+"】个联系人待处理。", fromUserID);
 				JSONObject room = this.getHandle().getSession().webwxCreateChatRoom(memberList);  //调用创建群方法
@@ -164,7 +164,7 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 					return list;
 				}
 				try {
-					Thread.sleep(1000*60*5);
+					Thread.sleep(1000*60*10);
 				} catch (InterruptedException e) {
 				}
 			}

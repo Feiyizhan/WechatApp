@@ -968,8 +968,8 @@ public class UserSession {
 		sb.append(" 有"+ GongZongList.size()+"个公众号。\n");
 		sb.append(" 有"+ FuWuList.size()+"个服务号。\n");
 		sb.append(" 有"+ DingYueList.size()+"个订阅号。\n");
-		sb.append(" 有"+ DingYueList.size()+"个企业号。\n");
-		sb.append(" 另外还有"+ DingYueList.size()+"个活跃的群。\n");
+		sb.append(" 有"+ QiYeList.size()+"个企业号。\n");
+		sb.append(" 另外还有"+ GrouptList.size()+"个活跃的群。\n");
 		return sb.toString();
 	}
 	
