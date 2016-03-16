@@ -53,7 +53,7 @@ public class AutoReceiveUserCmdProcess extends BaseCmdProcess {
 				
 		}else if(cmds.length==1){
 			cmd =  cmds[0];
-			user=this.getHandle().getSession().getUserByID(fromUserID, null);
+			user=this.getHandle().getSession().getUserByID(toUserID, null);
 			name =UserUtil.getUserRemarkName(user);
 		}else{
 			return false;
@@ -72,27 +72,27 @@ public class AutoReceiveUserCmdProcess extends BaseCmdProcess {
 						this.getHandle().getControl().AutoReceiveUserList.add(obj);
 					}
 				}
-				this.getHandle().getSession().webwxsendmsg("已设置自动答复所有人和群的消息",fromUserID);
+				this.getHandle().getSession().webwxsendmsg("已设置自动答复所有人和群的消息",toUserID);
 				
 			}else{
 				if (null!=user){
 					UserUtil.add(this.getHandle().getControl().AutoReceiveUserList, user);
-					this.getHandle().getSession().webwxsendmsg("设置【"+name+"】的消息自动答复成功",fromUserID);	
+					this.getHandle().getSession().webwxsendmsg("设置【"+name+"】的消息自动答复成功",toUserID);	
 				}else{
-					this.getHandle().getSession().webwxsendmsg("你还没有【"+name+"】这个好友/群",fromUserID);
+					this.getHandle().getSession().webwxsendmsg("你还没有【"+name+"】这个好友/群",toUserID);
 				}
 			}
 			return true ;
 		}else if("删除自动答复".equals(cmd)){
 			if(all){
 				this.getHandle().getControl().AutoReceiveUserList = new JSONArray();
-				this.getHandle().getSession().webwxsendmsg("已取消自动答复所有人和群的消息",fromUserID);
+				this.getHandle().getSession().webwxsendmsg("已取消自动答复所有人和群的消息",toUserID);
 			}else{
 				if (null!=user){
 					UserUtil.remove(this.getHandle().getControl().AutoReceiveUserList, user);
-					this.getHandle().getSession().webwxsendmsg("取消【"+name+"】的消息自动答复成功",fromUserID);
+					this.getHandle().getSession().webwxsendmsg("取消【"+name+"】的消息自动答复成功",toUserID);
 				}else{
-					this.getHandle().getSession().webwxsendmsg("你还没有【"+name+"】这个好友/群",fromUserID);
+					this.getHandle().getSession().webwxsendmsg("你还没有【"+name+"】这个好友/群",toUserID);
 				}
 			}
 			return true;
@@ -100,7 +100,7 @@ public class AutoReceiveUserCmdProcess extends BaseCmdProcess {
 
 			if (null!=user){
 				UserUtil.add(this.getHandle().getControl().AutoReceiveUserList, user);
-				this.getHandle().getSession().webwxsendmsg("设置【"+name+"】的消息自动答复成功",fromUserID);
+				this.getHandle().getSession().webwxsendmsg("设置【"+name+"】的消息自动答复成功",toUserID);
 			}else{
 				this.getHandle().getSession().webwxsendmsg("你还没有【"+name+"】这个好友/群",fromUserID);
 			}
@@ -110,7 +110,7 @@ public class AutoReceiveUserCmdProcess extends BaseCmdProcess {
 
 			if (null!=user){
 				UserUtil.remove(this.getHandle().getControl().AutoReceiveUserList, user);
-				this.getHandle().getSession().webwxsendmsg("取消【"+name+"】的消息自动答复成功",fromUserID);
+				this.getHandle().getSession().webwxsendmsg("取消【"+name+"】的消息自动答复成功",toUserID);
 			}else{
 				this.getHandle().getSession().webwxsendmsg("你还没有【"+name+"】这个好友/群",fromUserID);
 			}
