@@ -10,9 +10,10 @@ import blade.kit.json.JSONValue;
 import blade.kit.logging.Logger;
 import blade.kit.logging.LoggerFactory;
 import feiyizhan.api.tuling.TulingUtil;
-import feiyizhan.weixin.msg.handle.CmdTextMessageHandle;
 import feiyizhan.weixin.msg.handle.MessageHandleImpl;
-import feiyizhan.weixin.msg.handle.TextMesageHandle;
+import feiyizhan.weixin.msg.handle.text.CmdTextMessageHandle;
+import feiyizhan.weixin.msg.handle.text.NormalTextMessageHandle;
+import feiyizhan.weixin.msg.handle.text.TextMesageHandle;
 import feiyizhan.weixin.util.JSONUtil;
 import feiyizhan.weixin.util.UserUtil;
 
@@ -90,8 +91,10 @@ public class AppControl {
 	 */
 	private void init(){
 		this.handleList = new ArrayList<MessageHandleImpl>();
-		//增加文本消息处理器
-		this.handleList.add(new TextMesageHandle(this.userSession,this));
+		//增加命令文本消息处理器
+		this.handleList.add(new CmdTextMessageHandle(this.userSession, this));
+		//增加普通文本消息处理器
+		this.handleList.add(new NormalTextMessageHandle(this.userSession, this));
 	}
 
 
@@ -114,9 +117,9 @@ public class AppControl {
 			
 			String content = msg.getString("Content");
 			
-			LOGGER.info("[*] msg:"+msg);
-			LOGGER.info("[*] 消息类型:"+msgType);
-			LOGGER.info("[*] content:"+content);
+			LOGGER.debug("[*] msg:"+msg);
+			LOGGER.debug("[*] 消息类型:"+msgType);
+			LOGGER.debug("[*] content:"+content);
 			
 			for(MessageHandleImpl mh:this.handleList){
 				if(mh.handleMessage(msg)){

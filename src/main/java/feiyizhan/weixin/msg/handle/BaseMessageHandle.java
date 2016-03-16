@@ -3,6 +3,7 @@ package feiyizhan.weixin.msg.handle;
 import blade.kit.json.JSONObject;
 import feiyizhan.weixin.AppControl;
 import feiyizhan.weixin.UserSession;
+import feiyizhan.weixin.util.MessageUtil;
 
 public abstract class BaseMessageHandle implements MessageHandleImpl {
 	private UserSession session ;
@@ -40,7 +41,18 @@ public abstract class BaseMessageHandle implements MessageHandleImpl {
 
 
 	@Override
-	public abstract boolean handleMessage(JSONObject msg) ;
+	public  boolean handleMessage(JSONObject msg) {
+		return isMe(msg);
+	}
 	
-
+	
+	
+	/**
+	 *  判断是否是本消息处理
+	 * @return
+	 */
+	public boolean isMe(JSONObject msg) {
+		// TODO 自动生成的方法存根
+		return this.getMessageType()==MessageUtil.getMessageType(msg);
+	}
 }

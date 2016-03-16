@@ -15,7 +15,12 @@ public interface MessageHandleImpl {
 	 */
 	public boolean handleMessage(JSONObject msg);
 
-	
+
+	/**
+	 * 获取消息类型
+	 * @return
+	 */
+	public int getMessageType();
 		
 		
 	

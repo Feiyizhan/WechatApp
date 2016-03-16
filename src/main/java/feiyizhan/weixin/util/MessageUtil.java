@@ -45,5 +45,14 @@ public class MessageUtil {
 		return msg.getInt("MsgType",-1);
 	}
 	
-	
+
+	/**
+	 * 返回消息类型，如果没有获取到，返回-1
+	 * @param msg
+	 * @return
+	 */
+	public static int getMessageType(JSONObject msg){
+		return  msg.getInt("MsgType", -1);
+		
+	}
 }

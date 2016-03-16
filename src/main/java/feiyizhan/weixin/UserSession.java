@@ -63,7 +63,7 @@ public class UserSession {
 				"lang", "zh_CN",
 				"_" , DateKit.getCurrentUnixTime());
 		
-		LOGGER.info("[*] " + request);
+		LOGGER.debug("[*] " + request);
 		
 		String res = request.body();
 		request.disconnect();
@@ -73,10 +73,10 @@ public class UserSession {
 			if(null != code){
 				if(code.equals("200")){
 					this.uuid = Matchers.match("window.QRLogin.uuid = \"(.*)\";", res);
-					LOGGER.info("[*] 获取到uuid为 [%s]", this.uuid);
+					LOGGER.info("[*] 获取到uuid为{}", this.uuid);
 					return this.uuid;
 				} else {
-					LOGGER.info("[*] 错误的状态码: %s", code);
+					LOGGER.info("[*] 错误的状态码:{}", code);
 				}
 			}
 		}
@@ -160,7 +160,7 @@ public class UserSession {
 		
 		HttpRequest request = HttpRequest.get(this.redirect_uri);
 		
-		LOGGER.info("[*] " + request);
+		LOGGER.debug("[*] " + request);
 		
 		String res = request.body();
 		this.cookie = CookieUtil.getCookie(request);
@@ -187,6 +187,7 @@ public class UserSession {
 		BaseRequest.put("Skey", this.skey);
 		BaseRequest.put("DeviceID", this.deviceId);
 		
+		
 		return true;
 	}
 	
@@ -206,7 +207,7 @@ public class UserSession {
 				.header("Cookie", this.cookie)
 				.send(body.toString());
 		
-		LOGGER.info("[*] " + request);
+		LOGGER.debug("[*] " + request);
 		String res = request.body();
 		request.disconnect();
 		
@@ -240,7 +241,7 @@ public class UserSession {
 						
 						this.synckey = synckey.substring(1);
 						
-
+						this.webwxsendmsg("登录成功，查询命令，请输入【帮助】。", UserUtil.getUserID(this.User));
 //						
 //						if(null != BaseResponse){
 //							for(int i=0, len=MemberList.size(); i<len; i++){
@@ -294,7 +295,7 @@ public class UserSession {
 				.header("Cookie", this.cookie)
 				.send(body.toString());
 		
-		LOGGER.info("[*] " + request);
+		LOGGER.debug("[*] " + request);
 		String res = request.body();
 		request.disconnect();
 
@@ -331,7 +332,7 @@ public class UserSession {
 				.header("Cookie", this.cookie)
 				.send(body.toString());
 		
-		LOGGER.info("[*] " + request);
+		LOGGER.debug("[*] " + request);
 		String res = request.body();
 		request.disconnect();
 //		LOGGER.info("[*] 联系人的返回: " + res);  //显示消息返回
@@ -395,7 +396,7 @@ public class UserSession {
 				.header("Cookie", this.cookie)
 				.send(body.toString());
 		
-		LOGGER.info("[*] " + request);
+		LOGGER.debug("[*] " + request);
 		String res = request.body();
 		request.disconnect();
 		if(StringKit.isBlank(res)){
@@ -443,7 +444,7 @@ public class UserSession {
 				.header("Cookie", this.cookie)
 				.send(body.toString());
 		
-		LOGGER.info("[*] " + request);
+		LOGGER.debug("[*] " + request);
 		String res = request.body();
 		request.disconnect();
 		if(StringKit.isBlank(res)){
@@ -487,9 +488,8 @@ public class UserSession {
 				.header("Cookie", this.cookie)
 				.send(body.toString());
 		
-		LOGGER.info("[*] " + request);
+		LOGGER.debug("[*] " + request);
 		String res = request.body();
-		LOGGER.info("[*] " + res);
 		request.disconnect();
 		if(StringKit.isBlank(res)){
 			return room;
@@ -503,11 +503,13 @@ public class UserSession {
 					
 					room.put("ChatRoomName", jsonObject.getString("ChatRoomName"));
 					room.put("MemberList", jsonObject.getJSONArray("MemberList"));
+				}else{
+					LOGGER.debug("[*] " + res);
 				}
 
 			}
 		} catch (Exception e) {
-			LOGGER.info(e.getMessage());
+			LOGGER.error(e.getMessage());
 		}
 		return room;
 	}
@@ -527,7 +529,7 @@ public class UserSession {
 				.header("Cookie", this.cookie)
 				.send(body.toString());
 		
-		LOGGER.info("[*] " + request);
+		LOGGER.debug("[*] " + request);
 		String res = request.body();
 		request.disconnect();
 //		LOGGER.info("[*] 联系人的返回: " + res);  //显示消息返回
@@ -641,10 +643,11 @@ public class UserSession {
 								size +=1;
 								list.add(user);
 							}else if(str.startsWith("@")){ //服务号
-								user.put("UserName", str);
-								user.put("ChatRoomId", "");
-								size +=1;
-								list.add(user);
+//								user.put("UserName", str);
+//								user.put("ChatRoomId", "");
+//								size +=1;
+//								list.add(user);
+								LOGGER.info("[*] "+str);
 							}else{ //特殊帐号，不处理
 								LOGGER.info("[*] "+str);
 							}
@@ -655,26 +658,11 @@ public class UserSession {
 							this.webWxBatchGetContact(list);
 						}
 
-						LOGGER.info("[*] 获取联系人成功");
-						LOGGER.info("[*] 共有 %d 位联系人", MemberList.size());
-//						LOGGER.info("[*]"+this.MemberList);
-						LOGGER.info("[*] 共有 %d 位男性", MaleContactList.size());
-//						LOGGER.info("[*]"+this.MaleContactList);
-						LOGGER.info("[*] 共有 %d 位女性", FemaleContactList.size());
-//						LOGGER.info("[*]"+this.FemaleContactList);
-						LOGGER.info("[*] 共有 %d 位未设置性别", UnisexContactLit.size());
-//						LOGGER.info("[*]"+this.UnisexContactLit);
-						LOGGER.info("[*] 共有 %d 个公众号", GongZongList.size());
-//						LOGGER.info("[*]"+this.GongZongList);
-						LOGGER.info("[*] 共有 %d 个服务号", FuWuList.size());
-//						LOGGER.info("[*]"+this.FuWuList);
-						LOGGER.info("[*] 共有 %d 个订阅号", DingYueList.size());
-//						LOGGER.info("[*]"+this.DingYueList);
-						LOGGER.info("[*] 共有 %d 个企业号", QiYeList.size());
-//						LOGGER.info("[*]"+this.QiYeList);
-//						LOGGER.info("[*] ", JSONUtil.getStringValues(MemberList, generateUserNameKey()));
-						LOGGER.info("[*] 共有 %d 位服务号和群组", GrouptList.size());
-//						LOGGER.info("[*]"+this.GrouptList);
+
+						String report = this.getUserReport();
+						LOGGER.info("[*]",report);
+						this.webwxsendmsg(report, UserUtil.getUserID(this.User));
+						
 						
 						return true;
 					}
@@ -707,7 +695,7 @@ public class UserSession {
 				"_", System.currentTimeMillis())
 				.header("Cookie", this.cookie);
 		
-		LOGGER.info("[*] " + request);
+		LOGGER.debug("[*] " + request);
 		String res = request.body();
 		request.disconnect();
 
@@ -753,7 +741,7 @@ public class UserSession {
 				.header("Cookie", this.cookie)
 				.send(body.toString());
 		
-		LOGGER.info("[*] " + request);
+		LOGGER.debug("[*] " + request);
 		request.body();
 		request.disconnect();
 	}
@@ -776,7 +764,7 @@ public class UserSession {
 				.header("Cookie", this.cookie)
 				.send(body.toString());
 		
-		LOGGER.info("[*] " + request);
+		LOGGER.debug("[*] " + request);
 		String res = request.body();
 		request.disconnect();
 		
@@ -968,6 +956,24 @@ public class UserSession {
 	}
 	
 	/**
+	 * 获取当前用户报表
+	 * @return
+	 */
+	public String getUserReport(){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" 共有"+ MemberList.size()+"位联系人。\n");
+		sb.append(" 其中有"+ MaleContactList.size()+"位男性。\n");
+		sb.append(" 有"+ FemaleContactList.size()+"位女性。\n");
+		sb.append(" 有"+ UnisexContactLit.size()+"位未设置性别。\n");
+		sb.append(" 有"+ GongZongList.size()+"个公众号。\n");
+		sb.append(" 有"+ FuWuList.size()+"个服务号。\n");
+		sb.append(" 有"+ DingYueList.size()+"个订阅号。\n");
+		sb.append(" 有"+ DingYueList.size()+"个企业号。\n");
+		sb.append(" 另外还有"+ DingYueList.size()+"个活跃的群。\n");
+		return sb.toString();
+	}
+	
+	/**
 	 * 判断指定的用户ID是否为Special用户
 	 * @param id
 	 * @return
@@ -997,7 +1003,7 @@ public class UserSession {
 				.header("Cookie", this.cookie)
 				.send(body.toString());
 		
-		LOGGER.info("[*] " + request);
+		LOGGER.debug("[*] " + request);
 		String res = request.body();
 		request.disconnect();
 		

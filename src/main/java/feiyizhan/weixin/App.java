@@ -103,7 +103,7 @@ public class App {
 					
 					if(arr[0] == 1100){
 						LOGGER.info("[*] 你在手机上登出了微信，再见");
-						appControl.setBatchFlag(true);
+						appControl.setBatchFlag(false);
 						arr = userSession.syncCheck();
 						is_exit=true;
 					}
@@ -117,7 +117,7 @@ public class App {
 							appControl.handleMsg(data);
 						} else if(arr[1] == 7){
 							playWeChat += 1;
-							LOGGER.info("[*] 你在手机上玩微信被我发现了 %d 次", playWeChat);
+							LOGGER.info("[*] 你在手机上玩微信被我发现了{}次", playWeChat);
 							userSession.webwxsync();
 						} else if(arr[1] == 3){
 						} else if(arr[1] == 0){
