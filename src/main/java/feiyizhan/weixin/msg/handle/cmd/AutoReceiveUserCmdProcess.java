@@ -79,7 +79,7 @@ public class AutoReceiveUserCmdProcess extends BaseCmdProcess {
 					UserUtil.add(this.getHandle().getControl().AutoReceiveUserList, user);
 					this.getHandle().getSession().webwxsendmsg("设置【"+name+"】的消息自动答复成功",toUserID);	
 				}else{
-					this.getHandle().getSession().webwxsendmsg("你还没有【"+name+"】这个好友/群",toUserID);
+					this.getHandle().getSession().webwxsendmsg("你还没有【"+name+"】这个好友/群",fromUserID);
 				}
 			}
 			return true ;
@@ -92,7 +92,7 @@ public class AutoReceiveUserCmdProcess extends BaseCmdProcess {
 					UserUtil.remove(this.getHandle().getControl().AutoReceiveUserList, user);
 					this.getHandle().getSession().webwxsendmsg("取消【"+name+"】的消息自动答复成功",toUserID);
 				}else{
-					this.getHandle().getSession().webwxsendmsg("你还没有【"+name+"】这个好友/群",toUserID);
+					this.getHandle().getSession().webwxsendmsg("你还没有【"+name+"】这个好友/群",fromUserID);
 				}
 			}
 			return true;
