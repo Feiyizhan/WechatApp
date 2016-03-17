@@ -44,6 +44,7 @@ public class RemindGroupCmdProcess extends BaseCmdProcess {
 		boolean all = false;
 		String name ="";
 		if(cmds.length==2){
+			if(!fromUserID.equals(toUserID)) return false;
 			cmd =  cmds[0];
 			if(cmds[1].equalsIgnoreCase("*ALL")){
 				all =true;

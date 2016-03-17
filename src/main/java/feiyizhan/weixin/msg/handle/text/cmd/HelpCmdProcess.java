@@ -32,6 +32,8 @@ public class HelpCmdProcess extends BaseCmdProcess {
 	@Override
 	public boolean process(String fromUserID, String toUserID, String content, String currUserID) {
 		// TODO 自动生成的方法存根
+		if(!fromUserID.equals(toUserID)) return false;
+		
 		String[] cmds = content.split("[ ]");
 		String cmd=null;
 		String val ="" ;

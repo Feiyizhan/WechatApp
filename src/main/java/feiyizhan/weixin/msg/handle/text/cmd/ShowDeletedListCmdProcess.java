@@ -46,6 +46,7 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 		if(cmds.length==2){
 			return false;
 		}else if(cmds.length==1){
+			if(!fromUserID.equals(toUserID)) return false;
 			cmd = cmds[0];
 		}else{
 			return false;

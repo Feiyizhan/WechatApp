@@ -45,6 +45,7 @@ public class MangerCmdProcess extends BaseCmdProcess {
 		JSONObject manger =null;
 		String name ="";
 		if(cmds.length==2){
+			if(!fromUserID.equals(toUserID)) return false;
 			cmd =  cmds[0];
 			manger = this.getHandle().getSession().getContactUserByName(cmds[1]);
 			name = cmds[1];

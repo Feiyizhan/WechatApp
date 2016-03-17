@@ -35,6 +35,7 @@ public class RemindWordCmdProcess extends BaseCmdProcess {
 		String cmd=null;
 		String val =null;
 		if(cmds.length==2){
+			if(!fromUserID.equals(toUserID)) return false;
 			cmd =  cmds[0];
 			val = cmds[1];
 		}else if(cmds.length==1){
