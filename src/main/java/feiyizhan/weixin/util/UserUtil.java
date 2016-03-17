@@ -7,6 +7,7 @@ import java.util.List;
 import blade.kit.StringKit;
 import blade.kit.json.JSONArray;
 import blade.kit.json.JSONObject;
+import blade.kit.json.JSONValue;
 
 /**
  * 用户工具类
@@ -160,4 +161,94 @@ public class UserUtil {
 			return true;
 		}
 	}
+	
+	/**
+	 * 获取指定群的成员列表,无成员列表返回null。
+	 * @param group
+	 * @return
+	 */
+	public static JSONArray getGroupMemberList(JSONObject group){
+		if(group!=null){
+			return group.getJSONArray("MemberList");
+		}else{
+			return null ;
+		}
+	}
+	
+	
+	/**
+	 * 移除群成员清单
+	 * @param group
+	 */
+	public static void removeGroupMemberList(JSONObject group){
+		group.remove("MemberList");
+	}
+	
+	
+	/**
+	 * 增加群成员清单
+	 * @param group
+	 * @param memberList
+	 */
+	public static void addGroupMemberList(JSONObject group,JSONArray memberList){
+		group.put("MemberList", memberList);
+	}
+	
+	/**
+	 * 替换群成员列表
+	 * @param group
+	 * @param memberList
+	 */
+	public static void replaceGroupMemberList(JSONObject group,JSONArray memberList){
+		removeGroupMemberList(group);
+		addGroupMemberList(group,memberList);
+	}
+	/**
+	 * 转换为获取联系人清单的对象
+	 * @param user
+	 * @return
+	 */
+	public static JSONObject transferToGetContactFromat(String id,String roomID){
+		JSONObject obj = new JSONObject();
+		obj.put("UserName", id);
+		obj.put("EncryChatRoomId", roomID);
+		return obj;
+		
+	}
+	
+	/**
+	 * 转换为获取联系人清单的对象列表
+	 * @param idList
+	 * @param roomID
+	 * @return
+	 */
+	public static JSONArray transferToGetContactFromatArray(List<String> idList,String roomID){
+		JSONArray list = new JSONArray();
+		for(String str:idList){
+			list.add(transferToGetContactFromat(str,roomID));
+		}
+		return list;
+	}
+	
+	/**
+	 * 合并用户清单
+	 * @param list1
+	 * @param list2
+	 * @return
+	 */
+	public static JSONArray combinUserList(JSONArray list1,JSONArray list2){
+		if(list1!=null && list2!=null){
+			for(JSONValue val :list2){
+				JSONObject obj = val.asObject();
+				UserUtil.add(list1, obj);
+				
+			}
+			return list1;
+			
+		}else{
+			return list1;
+		}
+	}
+	
+	
 }

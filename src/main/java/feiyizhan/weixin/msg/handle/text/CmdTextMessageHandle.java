@@ -21,6 +21,7 @@ import feiyizhan.weixin.msg.handle.text.cmd.RemindGroupCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.RemindSwitchCmdProess;
 import feiyizhan.weixin.msg.handle.text.cmd.RemindWordCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.ShowDeletedListCmdProcess;
+import feiyizhan.weixin.msg.handle.text.cmd.ShowGroupDetailCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.ShowStatusCmdProcess;
 import feiyizhan.weixin.util.JSONUtil;
 import feiyizhan.weixin.util.MessageUtil;
@@ -48,6 +49,7 @@ public class CmdTextMessageHandle extends TextMesageHandle {
 		this.processList.add(new ShowStatusCmdProcess(this)); //注册显示当前状态命令处理模块
 		this.processList.add(new ShowDeletedListCmdProcess(this)); //注册显示删除我的用户清单命令处理模块
 		this.processList.add(new AutoReceiveUserCmdProcess(this)); //注册自动答复用户清单管理命令处理模块
+		this.processList.add(new ShowGroupDetailCmdProcess(this));//注册显示群明细命令处理模块
 		
 	}
 	

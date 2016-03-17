@@ -225,7 +225,7 @@ public class UserSession {
 						//记录下公众号和群号联系人
 //						this.ContactList = jsonObject.getJSONArray("ContactList");
 						
-						this.GrouptList=new JSONArray();
+						
 						this.CharSet = jsonObject.getString("ChatSet").split("[,]");
 						LOGGER.info("[*] 公众号+群号联系人总数:" + CharSet.length);
 						this.SyncKey = jsonObject.getJSONObject("SyncKey");
@@ -316,10 +316,10 @@ public class UserSession {
 	}
 	
 	/**
-	 * 批处理获取联系人列表（主要是群联系人）
+	 * 批处理获取联系人列表（主要是群联系人），返回联系人清单
 	 * @return
 	 */
-	public boolean webWxBatchGetContact(JSONArray list){
+	public JSONArray webWxBatchGetContact(JSONArray list){
 		String url = this.base_uri + "/webwxbatchgetcontact?type=ex&pass_ticket=" + this.pass_ticket + "&r=" + DateKit.getCurrentUnixTime();
 		
 		JSONObject body = new JSONObject();
@@ -337,7 +337,7 @@ public class UserSession {
 		request.disconnect();
 //		LOGGER.info("[*] 联系人的返回: " + res);  //显示消息返回
 		if(StringKit.isBlank(res)){
-			return false;
+			return null;
 		}
 		
 		try {
@@ -347,35 +347,25 @@ public class UserSession {
 				int ret = BaseResponse.getInt("Ret", -1);
 				if(ret == 0){
 					JSONArray Contlist = jsonObject.getJSONArray("ContactList");
-					if(null != list){
-						for(int i=0, len=Contlist.size(); i<len; i++){
-							JSONObject contact = Contlist.getJSONObject(i);
-//							//公众号/服务号
-//							if(contact.getInt("VerifyFlag", 0) == 8){
-//								continue;
+					return Contlist;
+//					if(null != list){
+//						
+//						for(int i=0, len=Contlist.size(); i<len; i++){
+//							JSONObject contact = Contlist.getJSONObject(i);
+//							String id = UserUtil.getUserID(contact);
+//							if(id.startsWith("@@")){
+//								UserUtil.add(this.GrouptList, contact);
+//							}else{
+//								UserUtil.add(this.MaleContactList, contact);
 //							}
-//							//特殊联系人
-//							if(SpecialUsers.contains(contact.getString("UserName"))){
-//								continue;
-//							}
-//							//群聊
-//							if(contact.getString("UserName").indexOf("@@") != -1){
-//								//continue;
-//							}
-//							//自己
-//							if(contact.getString("UserName").equals(this.User.getString("UserName"))){
-//								//continue;
-//							}
-							this.GrouptList.add(contact);
-						}
-//						LOGGER.info("[*] 联系人清单："+MemberList.toString());
-						return true;
-					}
+//						}
+//						return true;
+//					}
 				}
 			}
 		} catch (Exception e) {
 		}
-		return false;
+		return null;
 	}
 	
 	
@@ -547,109 +537,20 @@ public class UserSession {
 					
 					if(null != MemberList){
 						
-						this.ContactList = new JSONArray();
-						this.GongZongList =new JSONArray();
-						this.MaleContactList =new JSONArray();
-						this.FemaleContactList = new JSONArray();
-						this.FuWuList = new JSONArray();
-						this.DingYueList = new JSONArray();
-						this.QiYeList = new JSONArray();
-						this.UnisexContactLit = new JSONArray();
-						for(int i=0, len=MemberList.size(); i<len; i++){
-							JSONObject contact = this.MemberList.getJSONObject(i);
-							int sex = contact.getInt("Sex", -1);
-							int verifyFlag = contact.getInt("VerifyFlag", -1);
-							String userID =UserUtil.getUserID(contact);
-							if(SpecialUsers.contains(userID)){  //特殊联系人不处理
-								LOGGER.info("[*]特殊联系人"+contact);
-								continue;
-							}
-							if(userID!=null && userID.equals(UserUtil.getUserID(this.User))){  //自己
-								LOGGER.info("[*]自己"+contact);
-								continue;
-							}
-							if(userID!=null && userID.startsWith("@@")){  //群号
-								LOGGER.info("[*]群号"+contact);
-								continue;
-							}
-							switch (verifyFlag){
-							case 0:{  //非公众号
-								switch (sex){
-								case 0:{ //不男不女
-									this.ContactList.add(contact);
-									this.UnisexContactLit.add(contact);
-									break;
-								}
-								case 1:{ //男性
-									this.ContactList.add(contact);
-									this.MaleContactList.add(contact);
-									break;
-								}
-								case 2:{ //女性
-									this.ContactList.add(contact);
-									this.FemaleContactList.add(contact);
-									break;
-								}
-								default:{  //未识别的性别信息
-									LOGGER.info("[*]未识别的性别信息"+contact);
-								}
-								}
-								break;
-							}
-							case 24:{ // 服务号
-								this.GongZongList.add(contact);
-								this.FuWuList.add(contact);
-								break;
-							}
-							
-							case 8:{  //订阅号
-								this.GongZongList.add(contact);
-								this.DingYueList.add(contact);
-								break;
-							}
-							case 29:{ //企业号
-								this.GongZongList.add(contact);
-								this.QiYeList.add(contact);
-								break;
-							}
-							default:{ //其他未识别
-								LOGGER.info("[*]未识别的类型|"+contact);
-							}
-							
-							}
-
-//							//公众号/服务号
-//							if(contact.getInt("Sex", 0) == 8){
-//								continue;
-//							}
-//							//特殊联系人
-//							if(SpecialUsers.contains(contact.getString("UserName"))){
-//								continue;
-//							}
-//							//群聊
-//							if(contact.getString("UserName").indexOf("@@") != -1){
-//								//continue;
-//							}
-//							//自己
-//							if(contact.getString("UserName").equals(this.User.getString("UserName"))){
-//								//continue;
-//							}
-//							ContactList.add(contact);
-						}
-//						LOGGER.info("[*] 联系人清单："+MemberList.toString());
+						this.GrouptList=new JSONArray();
 						int size =0;
 						JSONArray list = new JSONArray();
 						for(String str:this.CharSet){
 							JSONObject user = new JSONObject();
-							if(size >=20){
-								this.webWxBatchGetContact(list);
+							if(size >=50){
+								UserUtil.combinUserList(this.GrouptList, this.webWxBatchGetContact(list));
 								list =  new JSONArray();
 								size =0;
 							}
 							if(str.startsWith("@@")){ //获取群明细
 								user.put("UserName", str);
 								user.put("EncryChatRoomId", "");
-								size +=1;
+								size ++;
 								list.add(user);
 							}else if(str.startsWith("@")){ //服务号
 //								user.put("UserName", str);
@@ -664,10 +565,15 @@ public class UserSession {
 						}
 						
 						if (size >0){
-							this.webWxBatchGetContact(list);
+							UserUtil.combinUserList(this.GrouptList, this.webWxBatchGetContact(list));
 						}
-
-
+						for(JSONValue val:this.GrouptList){
+							JSONObject obj = val.asObject();
+							reFlashGroupContactList(obj);
+						}
+                          
+						this.reFlashContactist();
+						
 						String report = this.getUserReport();
 						LOGGER.info("[*]",report);
 						this.webwxsendmsg(report, UserUtil.getUserID(this.User));
@@ -925,7 +831,7 @@ public class UserSession {
 		 *  3 -- 公众号
 		 */
 		if(null!=group&&2==group.getInt("ContactFlag",-1)){
-			JSONArray memberList = group.getJSONArray("MemberList");
+			JSONArray memberList = UserUtil.getGroupMemberList(group);
 			return UserUtil.findUserObjectByID(memberList,  id);
 		}
 		
@@ -946,7 +852,7 @@ public class UserSession {
 		 *  3 -- 公众号
 		 */
 		if(null!=group&&2==group.getInt("ContactFlag",-1)){
-			JSONArray memberList = group.getJSONArray("MemberList");
+			JSONArray memberList =  UserUtil.getGroupMemberList(group);
 			return UserUtil.findUserObjectByName(memberList,  name);
 		}
 		
@@ -1032,4 +938,120 @@ public class UserSession {
 		
 	}
 	
+	/**
+	 * 按照当前的MemberList更新联系人列表
+	 */
+	public void reFlashContactist(){
+		if(null != MemberList){
+			this.ContactList = new JSONArray();
+			this.GongZongList =new JSONArray();
+			this.MaleContactList =new JSONArray();
+			this.FemaleContactList = new JSONArray();
+			this.FuWuList = new JSONArray();
+			this.DingYueList = new JSONArray();
+			this.QiYeList = new JSONArray();
+			this.UnisexContactLit = new JSONArray();
+			for(int i=0, len=MemberList.size(); i<len; i++){
+				JSONObject contact = this.MemberList.getJSONObject(i);
+				int sex = contact.getInt("Sex", -1);
+				int verifyFlag = contact.getInt("VerifyFlag", -1);
+				String userID =UserUtil.getUserID(contact);
+				if(SpecialUsers.contains(userID)){  //特殊联系人不处理
+					LOGGER.info("[*]特殊联系人"+contact);
+					continue;
+				}
+				if(userID!=null && userID.equals(UserUtil.getUserID(this.User))){  //自己
+					LOGGER.info("[*]自己"+contact);
+					continue;
+				}
+				if(userID!=null && userID.startsWith("@@")){  //群号
+					UserUtil.add(this.GrouptList, contact);
+					LOGGER.info("[*]群号"+contact);
+					continue;
+				}
+				switch (verifyFlag){
+				case 0:{  //非公众号
+					switch (sex){
+					case 0:{ //不男不女
+						this.ContactList.add(contact);
+						this.UnisexContactLit.add(contact);
+						break;
+					}
+					case 1:{ //男性
+						this.ContactList.add(contact);
+						this.MaleContactList.add(contact);
+						break;
+					}
+					case 2:{ //女性
+						this.ContactList.add(contact);
+						this.FemaleContactList.add(contact);
+						break;
+					}
+					default:{  //未识别的性别信息
+						LOGGER.info("[*]未识别的性别信息"+contact);
+					}
+					}
+					break;
+				}
+				case 24:{ // 服务号
+					this.GongZongList.add(contact);
+					this.FuWuList.add(contact);
+					break;
+				}
+				
+				case 8:{  //订阅号
+					this.GongZongList.add(contact);
+					this.DingYueList.add(contact);
+					break;
+				}
+				case 29:{ //企业号
+					this.GongZongList.add(contact);
+					this.QiYeList.add(contact);
+					break;
+				}
+				default:{ //其他未识别
+					LOGGER.info("[*]未识别的类型|"+contact);
+				}
+				
+				}
+			}
+			
+		}
+	}
+	
+	/**
+	 * 刷新群成员清单为明细清单
+	 * @param group
+	 */
+	public void reFlashGroupContactList(JSONObject group){
+		String roomID = UserUtil.getUserID(group);
+		int count =0;
+		List<String> idList = new ArrayList<String>(50);
+		JSONArray contactList = new JSONArray();
+		JSONArray memberList = UserUtil.getGroupMemberList(group);
+		for(JSONValue val:memberList){
+			JSONObject member = val.asObject();
+			String id = UserUtil.getUserID(member);
+			if(count>=50){
+
+				JSONArray list = UserUtil.transferToGetContactFromatArray(idList, roomID);
+				UserUtil.combinUserList(contactList, this.webWxBatchGetContact(list));
+				idList = new ArrayList<String>(50);
+				count =0;
+				
+			}
+			idList.add(id);
+			count++;
+			
+		}
+		
+		if(count>=0){
+			JSONArray list = UserUtil.transferToGetContactFromatArray(idList, roomID);
+			UserUtil.combinUserList(contactList, this.webWxBatchGetContact(list));
+		}
+		
+		//替换群成员对象为更明细的群成员对象
+		UserUtil.replaceGroupMemberList(group,contactList);
+		
+	}
 }
