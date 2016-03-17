@@ -99,7 +99,7 @@ public class App {
 					
 					int[] arr = userSession.syncCheck();
 					
-					LOGGER.info("[*] retcode=%s,selector=%s", arr[0], arr[1]);
+					LOGGER.info("[*] retcode={},selector={}", arr[0], arr[1]);
 					
 					if(arr[0] == 1100){
 						LOGGER.info("[*] 你在手机上登出了微信，再见");
@@ -121,18 +121,13 @@ public class App {
 							userSession.webwxsync();
 						} else if(arr[1] == 3){
 						} else if(arr[1] == 0){
-							try {
-								Thread.sleep(100);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
+
 						}
-					} else {
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
+					} 
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
 				}
 			}
