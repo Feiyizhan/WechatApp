@@ -538,39 +538,39 @@ public class UserSession {
 					if(null != MemberList){
 						
 						this.GrouptList=new JSONArray();
-						int size =0;
-						JSONArray list = new JSONArray();
-						for(String str:this.CharSet){
-							JSONObject user = new JSONObject();
-							if(size >=50){
-								UserUtil.combinUserList(this.GrouptList, this.webWxBatchGetContact(list));
-								list =  new JSONArray();
-								size =0;
-							}
-							if(str.startsWith("@@")){ //获取群明细
-								user.put("UserName", str);
-								user.put("EncryChatRoomId", "");
-								size ++;
-								list.add(user);
-							}else if(str.startsWith("@")){ //服务号
+//						int size =0;
+//						JSONArray list = new JSONArray();
+//						for(String str:this.CharSet){
+//							JSONObject user = new JSONObject();
+//							if(size >=50){
+//								UserUtil.combinUserList(this.GrouptList, this.webWxBatchGetContact(list));
+//								list =  new JSONArray();
+//								size =0;
+//							}
+//							if(str.startsWith("@@")){ //获取群明细
 //								user.put("UserName", str);
-//								user.put("ChatRoomId", "");
-//								size +=1;
+//								user.put("EncryChatRoomId", "");
+//								size ++;
 //								list.add(user);
-								LOGGER.info("[*] "+str);
-							}else{ //特殊帐号，不处理
-								LOGGER.info("[*] "+str);
-							}
-							
-						}
-						
-						if (size >0){
-							UserUtil.combinUserList(this.GrouptList, this.webWxBatchGetContact(list));
-						}
-						for(JSONValue val:this.GrouptList){
-							JSONObject obj = val.asObject();
-							reFlashGroupContactList(obj);
-						}
+//							}else if(str.startsWith("@")){ //服务号
+////								user.put("UserName", str);
+////								user.put("ChatRoomId", "");
+////								size +=1;
+////								list.add(user);
+//								LOGGER.info("[*] "+str);
+//							}else{ //特殊帐号，不处理
+//								LOGGER.info("[*] "+str);
+//							}
+//							
+//						}
+//						
+//						if (size >0){
+//							UserUtil.combinUserList(this.GrouptList, this.webWxBatchGetContact(list));
+//						}
+//						for(JSONValue val:this.GrouptList){
+//							JSONObject obj = val.asObject();
+//							reFlashGroupContactList(obj);
+//						}
                           
 						this.reFlashContactist();
 						
