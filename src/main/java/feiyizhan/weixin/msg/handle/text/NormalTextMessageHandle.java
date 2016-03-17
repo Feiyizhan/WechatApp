@@ -67,9 +67,4 @@ public class NormalTextMessageHandle extends TextMesageHandle {
 		return true;
 	}
 
-	@Override
-	public int getMessageType() {
-		// TODO 自动生成的方法存根
-		return 0;
-	}
 }
