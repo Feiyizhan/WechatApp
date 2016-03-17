@@ -559,8 +559,17 @@ public class UserSession {
 							JSONObject contact = this.MemberList.getJSONObject(i);
 							int sex = contact.getInt("Sex", -1);
 							int verifyFlag = contact.getInt("VerifyFlag", -1);
-							if(SpecialUsers.contains(contact.getString("UserName"))){  //特殊联系人不处理
+							String userID =UserUtil.getUserID(contact);
+							if(SpecialUsers.contains(userID)){  //特殊联系人不处理
 								LOGGER.info("[*]特殊联系人"+contact);
+								continue;
+							}
+							if(userID!=null && userID.equals(UserUtil.getUserID(this.User))){  //自己
+								LOGGER.info("[*]自己"+contact);
+								continue;
+							}
+							if(userID!=null && userID.startsWith("@@")){  //群号
+								LOGGER.info("[*]群号"+contact);
 								continue;
 							}
 							switch (verifyFlag){
