@@ -149,6 +149,7 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 				memberList = new JSONArray();
 				count =0;
 				String roomID = room.getString("ChatRoomName");
+				String errMsg = room.getString("ErrMsg");
 				if(StringKit.isNotBlank(roomID)){
 					JSONArray roomMemberList = room.getJSONArray("MemberList");
 					for(JSONValue roomMember:roomMemberList){
@@ -161,7 +162,8 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 						
 					}
 				}else{
-					this.sendTextMessage("【系统消息】\n处理失败，还有【"+(maxCount-processedCount)+"】个联系人未处理。", fromUserID);
+					this.sendTextMessage("【系统消息】\n处理失败，失败原因【"+errMsg+"】。还有【"+(maxCount-processedCount)+"】个联系人未处理。", fromUserID);
+					list.removeAll(list);
 					return list;
 				}
 				try {
