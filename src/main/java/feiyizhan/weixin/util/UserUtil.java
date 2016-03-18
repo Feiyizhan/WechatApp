@@ -20,29 +20,13 @@ public class UserUtil {
 	 * 获取用户名的关键字
 	 */
 	public static final List<String> NAMES_KEYS = Arrays.asList("RemarkName","NickName");
+
 	/**
-	 * 获取备注用户名，如果用户有备注名，返回备注名，没有返回用户名。
+	 * 获取用户名，如果用户有备注名，返回备注名，没有返回用户名。
 	 * @param user
 	 * @return
 	 */
 	public static String getUserRemarkName(JSONObject user){
-		String name = "这个人物名字未知";
-		if(null!=user){
-			if(StringKit.isNotBlank(user.getString("RemarkName"))){
-				name = user.getString("RemarkName");
-			}else{
-				name = user.getString("NickName");
-			}
-		}
-		return name;
-	}
-	
-	/**
-	 * 获取群成员用户名，如果用户有备注名，返回备注名，没有返回用户名。
-	 * @param user
-	 * @return
-	 */
-	public static String getGroupUserRemarkName(JSONObject user){
 		String name = "这个人物名字未知";
 		if(null!=user){
 			if(StringKit.isNotBlank(user.getString("DisplayName"))){

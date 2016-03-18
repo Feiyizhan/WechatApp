@@ -91,20 +91,20 @@ public class ShowGroupDetailCmdProcess extends BaseCmdProcess {
 		for(JSONValue val:memberList){
 			JSONObject member = val.asObject();
 			if(UserUtil.isFound(this.getHandle().getSession().MemberList, member)){  //该用户在个人通讯录里
-				contactList.add(UserUtil.getGroupUserRemarkName(member));
+				contactList.add(UserUtil.getUserRemarkName(member));
 			}
 			int sex = member.getInt("Sex", -1);
 			switch (sex){
 			case 0:{ //不男不女
-				unisexList.add(UserUtil.getGroupUserRemarkName(member));
+				unisexList.add(UserUtil.getUserRemarkName(member));
 				break;
 			}
 			case 1:{ //男性
-				maleList.add(UserUtil.getGroupUserRemarkName(member));
+				maleList.add(UserUtil.getUserRemarkName(member));
 				break;
 			}
 			case 2:{ //女性
-				femaleList.add(UserUtil.getGroupUserRemarkName(member));
+				femaleList.add(UserUtil.getUserRemarkName(member));
 				break;
 			}
 			default:{  //未识别的性别信息
