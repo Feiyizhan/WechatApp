@@ -489,11 +489,13 @@ public class UserSession {
 			JSONObject BaseResponse = jsonObject.getJSONObject("BaseResponse");
 			if(null != BaseResponse){
 				int ret = BaseResponse.getInt("Ret", -1);
-				if(ret == 0){
+				String errMsg = BaseResponse.getString("ErrMsg");
+				if(ret == 0 && errMsg.equals("Everything is OK")){
 					
 					room.put("ChatRoomName", jsonObject.getString("ChatRoomName"));
 					room.put("MemberList", jsonObject.getJSONArray("MemberList"));
 				}else{
+					room.put("ErrMsg", errMsg);
 					LOGGER.debug("[*] " + res);
 				}
 
@@ -1052,6 +1054,35 @@ public class UserSession {
 		
 		//替换群成员对象为更明细的群成员对象
 		UserUtil.replaceGroupMemberList(group,contactList);
+		
+	}
+	
+	/**
+	 * 刷新群信息
+	 * @param group
+	 */
+	public void reFlashGroup(JSONObject group){
+		String id = UserUtil.getUserID(group);
+		List<String> idList = new ArrayList<String>(1);
+		idList.add(id);
+		//先更新群本身的信息
+		JSONArray list = UserUtil.transferToGetContactFromatArray(idList, "");
+		UserUtil.combinUserList(this.GrouptList, this.webWxBatchGetContact(list));
+		//再更新群成员的信息
+		reFlashGroupContactList(this.getGroup(id));
+	}
+	
+	/**
+	 * 刷新用户信息
+	 * @param id
+	 */
+	public void reFlashContact(JSONObject user){
+		String id = UserUtil.getUserID(user);
+		List<String> idList = new ArrayList<String>(1);
+		idList.add(id);
+		JSONArray list = UserUtil.transferToGetContactFromatArray(idList, "");
+		UserUtil.combinUserList(this.MemberList, this.webWxBatchGetContact(list));
+		
 		
 	}
 }

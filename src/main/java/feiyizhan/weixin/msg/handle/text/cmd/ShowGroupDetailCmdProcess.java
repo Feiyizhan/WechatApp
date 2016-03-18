@@ -87,20 +87,24 @@ public class ShowGroupDetailCmdProcess extends BaseCmdProcess {
 		List<String> unisexList = new ArrayList<String>();
 		List<String> maleList = new ArrayList<String>();
 		List<String> femaleList = new ArrayList<String>();
+		List<String> contactList = new ArrayList<String>();
 		for(JSONValue val:memberList){
 			JSONObject member = val.asObject();
+			if(UserUtil.isFound(this.getHandle().getSession().MemberList, member)){  //该用户在个人通讯录里
+				contactList.add(UserUtil.getGroupUserRemarkName(member));
+			}
 			int sex = member.getInt("Sex", -1);
 			switch (sex){
 			case 0:{ //不男不女
-				unisexList.add(UserUtil.getUserRemarkName(member));
+				unisexList.add(UserUtil.getGroupUserRemarkName(member));
 				break;
 			}
 			case 1:{ //男性
-				maleList.add(UserUtil.getUserRemarkName(member));
+				maleList.add(UserUtil.getGroupUserRemarkName(member));
 				break;
 			}
 			case 2:{ //女性
-				femaleList.add(UserUtil.getUserRemarkName(member));
+				femaleList.add(UserUtil.getGroupUserRemarkName(member));
 				break;
 			}
 			default:{  //未识别的性别信息
@@ -112,6 +116,7 @@ public class ShowGroupDetailCmdProcess extends BaseCmdProcess {
 		sb.append(" 有【"+ femaleList.size()+"】位女性。\n");
 		sb.append(" 有【"+ unisexList.size()+"】位未设置性别。\n");
 		sb.append("分别是："+unisexList+"\n");
+		sb.append(" 有【"+ contactList.size()+"】位已加为好友。\n");
 		return sb.toString();
 		
 		

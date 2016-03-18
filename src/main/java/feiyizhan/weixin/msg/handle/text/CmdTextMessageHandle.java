@@ -17,6 +17,7 @@ import feiyizhan.weixin.msg.handle.text.cmd.BaseCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.ForwordMessageSwitchCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.HelpCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.MangerCmdProcess;
+import feiyizhan.weixin.msg.handle.text.cmd.ReFlashUserCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.RemindGroupCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.RemindSwitchCmdProess;
 import feiyizhan.weixin.msg.handle.text.cmd.RemindWordCmdProcess;
@@ -50,6 +51,7 @@ public class CmdTextMessageHandle extends TextMesageHandle {
 		this.processList.add(new ShowDeletedListCmdProcess(this)); //注册显示删除我的用户清单命令处理模块
 		this.processList.add(new AutoReceiveUserCmdProcess(this)); //注册自动答复用户清单管理命令处理模块
 		this.processList.add(new ShowGroupDetailCmdProcess(this));//注册显示群明细命令处理模块
+		this.processList.add(new ReFlashUserCmdProcess(this)); //注册更新当前用户信息命令处理模块
 		
 	}
 	

@@ -38,6 +38,25 @@ public class UserUtil {
 	}
 	
 	/**
+	 * 获取群成员用户名，如果用户有备注名，返回备注名，没有返回用户名。
+	 * @param user
+	 * @return
+	 */
+	public static String getGroupUserRemarkName(JSONObject user){
+		String name = "这个人物名字未知";
+		if(null!=user){
+			if(StringKit.isNotBlank(user.getString("DisplayName"))){
+				name = user.getString("DisplayName");
+			}else if(StringKit.isNotBlank(user.getString("RemarkName"))){
+				name = user.getString("RemarkName");
+			}else{
+				name = user.getString("NickName");
+			}
+		}
+		return name;
+	}
+	
+	/**
 	 * 获取用户ID
 	 * @param user
 	 * @return
@@ -163,6 +182,19 @@ public class UserUtil {
 	}
 	
 	/**
+	 * 替换用户
+	 * @param userList
+	 * @param user
+	 * @return
+	 */
+	public static boolean replace(JSONArray userList,JSONObject user){
+		remove(userList,user);
+		return add(userList,user);
+
+	}
+	
+	
+	/**
 	 * 获取指定群的成员列表,无成员列表返回null。
 	 * @param group
 	 * @return
@@ -240,7 +272,7 @@ public class UserUtil {
 		if(list1!=null && list2!=null){
 			for(JSONValue val :list2){
 				JSONObject obj = val.asObject();
-				UserUtil.add(list1, obj);
+				UserUtil.replace(list1, obj);
 				
 			}
 			return list1;
