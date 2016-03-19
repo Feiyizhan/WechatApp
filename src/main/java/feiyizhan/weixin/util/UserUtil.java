@@ -37,7 +37,7 @@ public class UserUtil {
 				name = user.getString("NickName");
 			}
 		}
-		return name;
+		return name.replaceAll("<[.[^<]]*>","");
 	}
 	
 	/**
