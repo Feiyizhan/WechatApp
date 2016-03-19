@@ -11,7 +11,7 @@
  <!-- 所有日志文件-->
  <appender name="AllLog" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
   <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-   <fileNamePattern>log/all/%d{yyyy-MM-dd}.log</fileNamePattern> 
+   <fileNamePattern>WecharApp/log/all/%d{yyyy-MM-dd}.log</fileNamePattern> 
    <maxHistory>30</maxHistory> 
   </rollingPolicy> 
   <encoder> 
@@ -22,7 +22,7 @@
   <!-- 调试日志文件-->
  <appender name="DebugLog" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
   <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-   <fileNamePattern>log/all/debug-%d{yyyy-MM-dd}.log</fileNamePattern> 
+   <fileNamePattern>WecharApp/log/all/debug-%d{yyyy-MM-dd}.log</fileNamePattern> 
    <maxHistory>30</maxHistory> 
   </rollingPolicy> 
   <encoder> 
