@@ -65,7 +65,7 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 					 */
 					public void run(){
 						List<String> list = getDeletedMeUserListWithCreatRoom(fromUserID);
-						getHandle().getSession().webwxsendmsg("【系统消息】：\n 总共有【"+list.size()+"】个用户删除了我。清单如下：\n",fromUserID);
+						sendTextMessage("【系统消息】：\n 总共有【"+list.size()+"】个用户删除了我。清单如下：\n",fromUserID);
 						int count =0;
 						ArrayList<String> names = new ArrayList<String>();
 						for(String id:list){
@@ -86,13 +86,17 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 						if(count >0){
 							getHandle().getSession().webwxsendmsg(names.toString()+"\n",fromUserID);
 						}
-						getHandle().getSession().webwxsendmsg("【系统消息】清单结束 \n",fromUserID);
+						sendTextMessage("【系统消息】清单结束 \n",fromUserID);
 	
 					}
 					
 					
 				}.start();
-				
+			}else if("删除".equals(cmd)){
+				this.markDeleted(this.getHandle().getSession().getUserByID(toUserID, ""));
+				return true;
+			}else{
+				sendTextMessage("【系统消息】处理中。。。 \n",fromUserID);
 			}
 			
 			return true;
@@ -107,6 +111,8 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 		// TODO 自动生成的方法存根
 		if("获取删除我的用户清单".equals(cmd)){
 			return true;
+		}else if("删除".equals(cmd)){
+			return true;
 		}else{
 			return false;
 		}
@@ -117,88 +123,115 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 	 * @param roomID
 	 * @return
 	 */
-	public ArrayList<String> getDeletedMeUserListWithCreatRoom(String fromUserID){
-		ArrayList<String> list = new ArrayList<String> ();
+	public List<String> getDeletedMeUserListWithCreatRoom(String fromUserID){
+		List<String> resultList = new ArrayList<String> ();
+		List<String> list = new ArrayList<String> ();
 		int count =0;
 		JSONArray memberList = new JSONArray();
 		JSONArray ContactList = this.getHandle().getSession().ContactList;
 		int maxCount = ContactList.size();
 		int processedCount =0 ;
 		this.sendTextMessage("【系统消息】\n您有【"+maxCount+"】个联系人需要甄别", fromUserID);
+		
 		for(JSONValue val:ContactList){
 			if(!getHandle().getControl().isBatchFlag()){
 				break;
 			}
 			JSONObject obj = val.asObject();
-			String id =obj.getString("UserName");
-			list.add(id);
+			String id =UserUtil.getUserID(obj);
+			String name = UserUtil.getUserRemarkName(obj);
 			if(id.startsWith("@@")){  // 置顶的群不处理
-				list.remove(id);
 				continue;
 			}
+			if(name.startsWith("A-A-DEL")){//已标注的不处理
+				continue;
+			}  
+			
+			
+			list.add(id);
 			
 			JSONObject member = new JSONObject();
 			member.put("UserName", id);
 			memberList.add(member);
-			LOGGER.debug("[*]"+id +"|"+UserUtil.getUserRemarkName(obj));
+			LOGGER.debug("[*]"+id +"|"+name);
 			count ++ ;
 			if (count>=30){
 				processedCount +=count;
-				this.sendTextMessage("【系统消息】\n当前已处理【"+processedCount+"】个联系人，还有【"+(maxCount-processedCount)+"】个联系人待处理。", fromUserID);
-				JSONObject room = this.getHandle().getSession().webwxCreateChatRoom(memberList);  //调用创建群方法
-				memberList = new JSONArray();
-				count =0;
-				String roomID = room.getString("ChatRoomName");
-				String errMsg = room.getString("ErrMsg");
-				if(StringKit.isNotBlank(roomID)){
-					JSONArray roomMemberList = room.getJSONArray("MemberList");
-					for(JSONValue roomMember:roomMemberList){
-						JSONObject memberObj = roomMember.asObject();
-						String memberID =memberObj.getString("UserName");
-						int memberStatus = memberObj.getInt("MemberStatus",-1);
-						if(memberStatus!=4){  //被删除的用户无法入群
-							list.remove(memberID);
-						}
-						
-					}
+				if(this.processDeleted(processedCount, maxCount, memberList, list, fromUserID)!=null){
+					resultList.addAll(list);
+					
 				}else{
-					this.sendTextMessage("【系统消息】\n处理失败，失败原因【"+errMsg+"】。还有【"+(maxCount-processedCount)+"】个联系人未处理。", fromUserID);
-					list.removeAll(list);
-					return list;
+					this.getHandle().getControl().setBatchFlag(false);
 				}
+				
+				count =0;
+				memberList = new JSONArray();
+				list = new ArrayList<String> ();
 				try {
 					Thread.sleep(1000*60*10);
 				} catch (InterruptedException e) {
 				}
+				
+				
 			}
 			
 		}
 		
 		if(!getHandle().getControl().isBatchFlag()){
-			return list;
+			return resultList;
 		}
 		
 		if (count>=0){
-			JSONObject room = this.getHandle().getSession().webwxCreateChatRoom(memberList);  //调用创建群方法
-			memberList = new JSONArray();
-			count =0;
-			String roomID = room.getString("ChatRoomName");
-			if(StringKit.isNotBlank(roomID)){
-				JSONArray roomMemberList = room.getJSONArray("MemberList");
-				for(JSONValue roomMember:roomMemberList){
-					JSONObject memberObj = roomMember.asObject();
-					String memberID =memberObj.getString("UserName");
-					int memberStatus = memberObj.getInt("MemberStatus",-1);
-					if(memberStatus!=4){  //被删除的用户无法入群
-						list.remove(memberID);
-					}
-					
-				}
+			if(this.processDeleted(processedCount, maxCount, memberList, list, fromUserID)!=null){
+				resultList.addAll(list);
+				
+			}else{
+				this.getHandle().getControl().setBatchFlag(false);
 			}
 		}
-		return list;
+		
+		resultList.addAll(list);
+		return resultList;
 	}
 
+	
+	/**
+	 * 获取被删除的处理方法
+	 * @param processedCount
+	 * @param maxCount
+	 * @param memberList
+	 * @param list
+	 * @param fromUserID
+	 * @return
+	 */
+	private List<String> processDeleted(int processedCount,int maxCount,JSONArray memberList,List<String> list ,String fromUserID){
+		this.sendTextMessage("【系统消息】\n当前已处理【"+processedCount+"】个联系人，还有【"+(maxCount-processedCount)+"】个联系人待处理。", fromUserID);
+		JSONObject room = this.getHandle().getSession().webwxCreateChatRoom(memberList);  //调用创建群方法
+		
+		
+		String roomID = room.getString("ChatRoomName");
+		String errMsg = room.getString("ErrMsg");
+		if(StringKit.isNotBlank(roomID)){
+			JSONArray roomMemberList = room.getJSONArray("MemberList");
+			for(JSONValue roomMember:roomMemberList){
+				JSONObject memberObj = roomMember.asObject();
+				String memberID =UserUtil.getUserID(memberObj);
+				int memberStatus = memberObj.getInt("MemberStatus",-1);
+				if(memberStatus!=4){  //被删除的用户无法入群
+					list.remove(memberID);
+				}else{
+					markDeleted(memberObj);
+				}
+				
+			}
+			return list;
+		}else{
+			this.sendTextMessage("【系统消息】\n处理失败，失败原因【"+errMsg+"】。还有【"+(maxCount-processedCount)+"】个联系人未处理。", fromUserID);
+			return null;
+
+		}
+		
+	}
 	
 	
 	
@@ -268,5 +301,17 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 	 */
 	private void sendTextMessage(String msg,String id){
 		getHandle().getSession().webwxsendmsg(msg,id);
+	}
+	
+	/**
+	 * 修改用户备注，标注为删除用户。
+	 * @param user
+	 */
+	public void markDeleted(JSONObject user){
+		String name = UserUtil.getUserRemarkName(user);
+		String remarkName = "A-A-DEL"+name;
+		if(!getHandle().getSession().changeUserRemarkName(user,remarkName)){
+			LOGGER.info("[*]备注失败【"+name+"】");
+		}
 	}
 }
