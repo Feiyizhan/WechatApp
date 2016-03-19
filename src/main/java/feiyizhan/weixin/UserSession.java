@@ -1085,4 +1085,40 @@ public class UserSession {
 		
 		
 	}
+	
+	
+	/**
+	 * 更新指定ID的信息到当前联系人列表
+	 * @param id
+	 */
+	public void updateMemberList(String id){
+		if(UserUtil.getUserID(this.User).equals(id)){
+			return;
+		}
+		if(this.isSpaciaUser(id)){
+			return;
+		}
+		JSONArray list = new JSONArray();
+		list.add(UserUtil.transferToGetContactFromat(id,""));
+		if(id.startsWith("@@")){
+			if(this.getGroup(id)==null){  //更新群联系人
+				UserUtil.combinUserList(this.GrouptList, this.webWxBatchGetContact(list));
+				JSONObject group = this.getGroup(id);
+				if(group!=null){
+					this.reFlashGroupContactList(group);
+				}
+			}
+			
+
+		}else{
+
+			if(this.getUserByID(id,null)==null){  //更新个人联系人
+				UserUtil.combinUserList(this.MemberList, this.webWxBatchGetContact(list));
+				this.reFlashContactist();
+				
+			}
+			
+		}
+	}
+
 }

@@ -125,8 +125,8 @@ public class AppControl {
 			//检查当前消息的群是否在联系人列表里，不在的更新
 			String toUserID = MessageUtil.getToUserID(msg);
 			String fromUserID = MessageUtil.getFromUserID(msg);
-			updateMemberList(toUserID);
-			updateMemberList(fromUserID);
+			this.userSession.updateMemberList(toUserID);
+			this.userSession.updateMemberList(fromUserID);
 			
 			for(MessageHandleImpl mh:this.handleList){
 				if(mh.handleMessage(msg)){
@@ -210,39 +210,7 @@ public class AppControl {
 	}
 	
 	
-	/**
-	 * 更新指定ID的信息到当前联系人列表
-	 * @param id
-	 */
-	public void updateMemberList(String id){
-		if(UserUtil.getUserID(this.userSession.User).equals(id)){
-			return;
-		}
-		if(this.userSession.isSpaciaUser(id)){
-			return;
-		}
-		JSONArray list = new JSONArray();
-		list.add(UserUtil.transferToGetContactFromat(id,""));
-		if(id.startsWith("@@")){
-			if(this.userSession.getGroup(id)==null){  //更新群联系人
-				UserUtil.combinUserList(this.userSession.GrouptList, this.userSession.webWxBatchGetContact(list));
-				JSONObject group = this.userSession.getGroup(id);
-				if(group!=null){
-					this.userSession.reFlashGroupContactList(group);
-				}
-			}
-			
-
-		}else{
-
-			if(this.userSession.getUserByID(id,null)==null){  //更新个人联系人
-				UserUtil.combinUserList(this.userSession.MemberList, this.userSession.webWxBatchGetContact(list));
-				this.userSession.reFlashContactist();
-				
-			}
-			
-		}
-	}
-
+	
+	
 	
 }
