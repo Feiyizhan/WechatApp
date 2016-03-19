@@ -1,8 +1,16 @@
 package feiyizhan.weixin;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+
+import blade.kit.DateKit;
+import blade.kit.FileKit;
+import blade.kit.StreamKit;
 import blade.kit.StringKit;
 import blade.kit.json.JSONArray;
 import blade.kit.json.JSONObject;
@@ -210,6 +218,29 @@ public class AppControl {
 	}
 	
 	
+	/**
+	 * 发送UUID到其他系统
+	 * @param UUID
+	 * @param sessionID
+	 * @return
+	 */
+	public boolean sendUUID(String UUID,String sessionID){
+		String file = "./WecharApp/UUID/"+sessionID+"/system.txt";
+		try {
+			if(FileKit.createFile(file,true)){
+				FileUtils.write(new File(file), "UUID = "+UUID, "UTF-8");;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			LOGGER.error(e.getMessage());
+		}
+		
+
+		
+		
+		
+		return true;
+	}
 	
 	
 	

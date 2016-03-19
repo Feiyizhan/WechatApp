@@ -127,13 +127,13 @@ public class UserSession {
 				webpush_url = "https://" + pushServer + "/cgi-bin/mmwebwx-bin";
 
 				this.redirect_uri = pm + "&fun=new";
-				LOGGER.info("[*] redirect_uri=%s", this.redirect_uri);
+				LOGGER.info("[*] redirect_uri={}", this.redirect_uri);
 				this.base_uri = this.redirect_uri.substring(0, this.redirect_uri.lastIndexOf("/"));
-				LOGGER.info("[*] base_uri=%s", this.base_uri);
+				LOGGER.info("[*] base_uri={}", this.base_uri);
 			} else if(code.equals("408")){
 				LOGGER.info("[*] 登录超时");
 			} else {
-				LOGGER.info("[*] 扫描code=%s", code);
+				LOGGER.info("[*] 扫描code={}", code);
 			}
 		}
 		return code;
@@ -144,6 +144,7 @@ public class UserSession {
 	 */
 	public boolean login(){
 		
+		boolean isLogin = false;
 		//等待扫描登录
 		for(int i=0;i<5*60/2;i++){
 			if(!waitForLogin().equals("200")){
@@ -152,8 +153,12 @@ public class UserSession {
 				} catch (InterruptedException e) {
 				}
 			}else{
+				isLogin = true;
 				break;
 			}
+		}
+		if(!isLogin){
+			return false;
 		}
 		
 		//扫描登录成功之后
@@ -176,10 +181,10 @@ public class UserSession {
 		this.wxuin = Matchers.match("<wxuin>(\\S+)</wxuin>", res);
 		this.pass_ticket = Matchers.match("<pass_ticket>(\\S+)</pass_ticket>", res);
 		
-		LOGGER.info("[*] skey[%s]", this.skey);
-		LOGGER.info("[*] wxsid[%s]", this.wxsid);
-		LOGGER.info("[*] wxuin[%s]", this.wxuin);
-		LOGGER.info("[*] pass_ticket[%s]", this.pass_ticket);
+		LOGGER.info("[*] skey{}", this.skey);
+		LOGGER.info("[*] wxsid{}", this.wxsid);
+		LOGGER.info("[*] wxuin{}", this.wxuin);
+		LOGGER.info("[*] pass_ticket{}", this.pass_ticket);
 		
 		this.BaseRequest = new JSONObject();
 		BaseRequest.put("Uin", this.wxuin);
@@ -348,19 +353,6 @@ public class UserSession {
 				if(ret == 0){
 					JSONArray Contlist = jsonObject.getJSONArray("ContactList");
 					return Contlist;
-//					if(null != list){
-//						
-//						for(int i=0, len=Contlist.size(); i<len; i++){
-//							JSONObject contact = Contlist.getJSONObject(i);
-//							String id = UserUtil.getUserID(contact);
-//							if(id.startsWith("@@")){
-//								UserUtil.add(this.GrouptList, contact);
-//							}else{
-//								UserUtil.add(this.MaleContactList, contact);
-//							}
-//						}
-//						return true;
-//					}
 				}
 			}
 		} catch (Exception e) {

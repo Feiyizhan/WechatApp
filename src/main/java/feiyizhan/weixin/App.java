@@ -125,7 +125,7 @@ public class App {
 						}
 					} 
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(1500);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -142,8 +142,24 @@ public class App {
 		String uuid = app.userSession.getUUID();
 		if(null == uuid){
 			LOGGER.info("[*] uuid获取失败");
-		} else {
-			app.showQrCode();
+		} else { 
+			if(args!=null && args.length==1 && StringKit.isNotBlank(args[0])){  //后台模式
+				app.appControl.sendUUID(uuid,args[0].trim().toUpperCase());
+				if(!app.userSession.login()){
+					LOGGER.info("微信登录失败");
+					return;
+				}
+			}else{
+				app.appControl.sendUUID(uuid,"system");
+				app.showQrCode();
+				if(!app.userSession.login()){
+					LOGGER.info("微信登录失败");
+					return;
+				}else{
+					app.closeQrWindow();
+				}
+			}
+			
 
 			if(!app.userSession.login()){
 				LOGGER.info("微信登录失败");
@@ -184,5 +200,7 @@ public class App {
 			//mvn exec:java -Dexec.mainClass="me.biezhi.weixin.App"
 		}
 	}
+	
+	
 	
 }
