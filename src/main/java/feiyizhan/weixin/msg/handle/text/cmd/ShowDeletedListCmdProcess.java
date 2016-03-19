@@ -235,63 +235,6 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 	
 	
 	
-	/**
-	 * 获取删除我的用户清单。
-	 * @param roomID
-	 * @return
-	 */
-	public ArrayList<String> getDeletedMeUserListWithAddRoom(){
-		ArrayList<String> list = new ArrayList<String> ();
-		int count =0;
-		JSONArray memberList = new JSONArray();
-		for(JSONValue val:this.getHandle().getSession().ContactList){
-			JSONObject obj = val.asObject();
-			String id =obj.getString("UserName");
-			list.add(id);
-			if(id.startsWith("@@")){  // 置顶的群不处理
-				list.remove(id);
-				continue;
-			}
-			
-			JSONObject member = new JSONObject();
-			member.put("UserName", id);
-			memberList.add(member);
-			LOGGER.debug("[*]"+id +"|"+UserUtil.getUserRemarkName(obj));
-			count ++ ;
-			if (count>=50){
-				JSONObject room = this.getHandle().getSession().webwxCreateChatRoom(memberList);  //调用创建群方法
-				memberList = new JSONArray();
-				count =0;
-				String roomID = room.getString("ChatRoomName");
-				if(StringKit.isNotBlank(roomID)){
-					JSONArray roomMemberList = room.getJSONArray("MemberList");
-					for(JSONValue roomMember:roomMemberList){
-						JSONObject memberObj = roomMember.asObject();
-						String memberID =memberObj.getString("UserName");
-						int memberStatus = memberObj.getInt("MemberStatus",-1);
-						if(memberStatus!=4){  //被删除的用户无法入群
-							list.remove(memberID);
-						}
-						
-					}
-				}
-				try {
-					Thread.sleep(10000);
-				} catch (InterruptedException e) {
-				}
-			}
-//			if(this.userSession.webwxupdatechatroomAdd(roomID, obj.getString("UserName"))){  //增加入群成功，说明没被删除
-//				this.userSession.webwxupdatechatroomDel(roomID, obj.getString("UserName")); // 移除出群
-//				LOGGER.info("[*]"+this.userSession.getUserRemarkName(obj));
-//			}else{ //被删除
-//				list.add(this.userSession.getUserRemarkName(obj));
-//			}
-
-			
-			
-		}
-		return list;
-	}
 
 	
 	/**
