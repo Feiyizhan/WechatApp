@@ -143,7 +143,8 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 			if(id.startsWith("@@")){  // 置顶的群不处理
 				continue;
 			}
-			if(name.startsWith("A-A-DEL")){//已标注的不处理
+			if(name.startsWith("A-A-DEL")){//已标注的略过，直接标志为删除
+				resultList.add(id);
 				continue;
 			}  
 			
