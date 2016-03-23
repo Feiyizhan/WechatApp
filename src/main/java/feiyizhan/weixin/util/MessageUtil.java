@@ -1,5 +1,9 @@
 package feiyizhan.weixin.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import blade.kit.json.JSONObject;
 
 /**
@@ -55,4 +59,21 @@ public class MessageUtil {
 		return  msg.getInt("MsgType", -1);
 		
 	}
+	
+	/**
+	 * 群消息内容解析
+	 * @param content
+	 * @return
+	 */
+	public static List<String> resolveGroupContent(String content){
+		if(content!=null){
+			List<String> contents = new ArrayList<String>();
+			contents= Arrays.asList(content.split("<br/>", 1));
+			
+			return contents;
+		}else{
+			return null ;
+		}
+	}
+
 }
