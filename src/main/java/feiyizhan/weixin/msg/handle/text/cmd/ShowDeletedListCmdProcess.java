@@ -168,6 +168,9 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 				count =0;
 				memberList = new JSONArray();
 				list = new ArrayList<String> ();
+				if(!getHandle().getControl().isBatchFlag()){
+					break;
+				}
 				try {
 					Thread.sleep(1000*60*10);
 				} catch (InterruptedException e) {
@@ -220,8 +223,15 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 				int memberStatus = memberObj.getInt("MemberStatus",-1);
 				if(memberStatus!=4){  //被删除的用户无法入群
 					list.remove(memberID);
+					markProcessed(memberObj);
 				}else{
 					markDeleted(memberObj);
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				
 			}
@@ -254,6 +264,18 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 	public void markDeleted(JSONObject user){
 		String name = UserUtil.getUserRemarkName(user);
 		String remarkName = "A-A-DEL"+name;
+		if(!getHandle().getSession().changeUserRemarkName(user,remarkName)){
+			LOGGER.info("[*]备注失败【"+name+"】");
+		}
+	}
+	
+	/**
+	 * 修改用户备注，标注为已处理过的用户。
+	 * @param user
+	 */
+	public void markProcessed(JSONObject user){
+		String name = UserUtil.getUserRemarkName(user);
+		String remarkName = "B-B-"+name;
 		if(!getHandle().getSession().changeUserRemarkName(user,remarkName)){
 			LOGGER.info("[*]备注失败【"+name+"】");
 		}
