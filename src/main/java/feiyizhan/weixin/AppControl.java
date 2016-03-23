@@ -228,17 +228,36 @@ public class AppControl {
 		String file = "./WecharApp/UUID/"+sessionID+"/system.txt";
 		try {
 			if(FileKit.createFile(file,true)){
-				FileUtils.write(new File(file), "UUID = "+UUID, "UTF-8");;
+				FileUtils.write(new File(file), "UUID : "+UUID, "UTF-8");
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			LOGGER.error(e.getMessage());
 		}
-		
 
-		
-		
-		
+		return true;
+	}
+	
+	/**
+	 * 保存登录者信息
+	 * @param sessionID
+	 * @return
+	 */
+	public boolean saveLoginUser(String sessionID){
+		if(this.userSession.User!=null){
+			String file = "./WecharApp/UUID/"+sessionID+"/user.txt";
+//			String userID =UserUtil.getUserID(this.userSession.User);
+//			String userName =UserUtil.getUserRemarkName(this.userSession.User);
+			try {
+				if(FileKit.createFile(file,true)){
+					FileUtils.write(new File(file), this.userSession.User.toString(), "UTF-8");
+//					FileUtils.write(new File(file), "userName : "+userName, "UTF-8");
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				LOGGER.error(e.getMessage());
+			}
+		}
 		return true;
 	}
 	

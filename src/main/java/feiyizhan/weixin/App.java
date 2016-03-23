@@ -35,6 +35,7 @@ public class App {
 	
 	private UserSession userSession = new UserSession();
 	private AppControl appControl = new AppControl(userSession);
+	private String sessionID = "system";
 	
 	public QRCodeFrame qrCodeFrame;
 	
@@ -144,29 +145,30 @@ public class App {
 			LOGGER.info("[*] uuid获取失败");
 		} else { 
 			if(args!=null && args.length==1 && StringKit.isNotBlank(args[0])){  //后台模式
-				app.appControl.sendUUID(uuid,args[0].trim().toUpperCase());
-				if(!app.userSession.login()){
-					LOGGER.info("微信登录失败");
-					return;
-				}
-			}else{
-				app.appControl.sendUUID(uuid,"system");
+				app.sessionID = args[0].trim().toUpperCase();
+
+			}
+			
+			if(app.sessionID.equals("system")){ //前台模式
 				app.showQrCode();
-				if(!app.userSession.login()){
-					LOGGER.info("微信登录失败");
-					return;
-				}else{
+			}
+			
+			app.appControl.sendUUID(uuid,app.sessionID);
+			
+			if(!app.userSession.login()){
+				LOGGER.info("微信登录失败");
+				if(app.sessionID.equals("system")){ //前台模式
+					app.closeQrWindow();
+				}
+				return;
+			}else{
+				if(app.sessionID.equals("system")){ //前台模式
 					app.closeQrWindow();
 				}
 			}
 			
 
-			if(!app.userSession.login()){
-				LOGGER.info("微信登录失败");
-				return;
-			}else{
-				app.closeQrWindow();
-			}
+
 			
 			LOGGER.info("[*] 微信登录成功");
 			
@@ -177,7 +179,11 @@ public class App {
 			
 			LOGGER.info("[*] 微信初始化成功");
 			
+			if(!app.appControl.saveLoginUser(app.sessionID)){
+				LOGGER.info("[*] 保存当前登录用户信息成功");
+			}
 			
+				
 			if(!app.userSession.wxStatusNotify()){
 				LOGGER.info("[*] 开启状态通知失败");
 				return;
