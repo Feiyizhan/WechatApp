@@ -723,7 +723,7 @@ public class UserSession {
 	 */
 	public JSONObject getUserByID(String id,String groupID){
 		if(null==groupID){  //个人联系
-			JSONObject member = this.getMemberUser(id);  //先在个人联系人清单里查找
+			JSONObject member = this.getContactUser(id);  //先在个人联系人清单里查找
 			if(null==member){
 				return this.getGroup(id);  //
 			}else{
@@ -774,7 +774,7 @@ public class UserSession {
 	}
 	
 	/**
-	 * 根据名称，获取服务号或者群。如果未找到，返回当前登录用户
+	 * 根据名称，获取服务号或者群。如果未找到，返回null
 	 * @param name
 	 * @return
 	 */
@@ -788,7 +788,7 @@ public class UserSession {
 	 * @param id
 	 * @return
 	 */
-	private JSONObject getMemberUser(String id){
+	public JSONObject getContactUser(String id){
 		return UserUtil.findUserObjectByID(this.ContactList,id);
 	}
 	
@@ -818,7 +818,7 @@ public class UserSession {
 	 * @param id
 	 * @return
 	 */
-	private JSONObject getGroupMemberUserByID(JSONObject group,String id){
+	public JSONObject getGroupMemberUserByID(JSONObject group,String id){
 		/*
 		 * 联系人类型 ContactFlag：
 		 *  2 -- 群
@@ -837,7 +837,7 @@ public class UserSession {
 	 * @param name
 	 * @return
 	 */
-	private JSONObject getGroupMemberUserByName(JSONObject group,String name){
+	public JSONObject getGroupMemberUserByName(JSONObject group,String name){
 		/*
 		 * 联系人类型 ContactFlag：
 		 *  2 -- 群
