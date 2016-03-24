@@ -3,6 +3,9 @@ package feiyizhan.weixin.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import blade.kit.StringKit;
 import blade.kit.json.JSONArray;
@@ -266,5 +269,37 @@ public class UserUtil {
 		}
 	}
 	
+	/**
+	 * 转换ID Map为Name Map
+	 * @param mapID
+	 * @param groupList
+	 * @return
+	 */
+	public static Map<String,String> convertGroupMapIDtoMapName(Map<String,String> mapID,JSONArray groupList){
+		Map<String,String> mapName = new TreeMap<String,String>();
+		Set<String> set = mapID.keySet();
+		for(String key:set){
+			String groupOwnID =mapID.get(key); //获取群主ID
+			String groupName = "";
+			String groupOwnName ="";
+			//获取群对象
+			JSONObject group = findUserObjectByID(groupList, key);
+			groupName = getUserRemarkName(group);
+			//获取群成员对象
+			JSONArray memberList = getGroupMemberList(group);
+			//获取群主对象
+			JSONObject groupOwn = findUserObjectByID(memberList, groupOwnID);
+			if(groupOwn!=null){
+				groupOwnName = getUserRemarkName(groupOwn);
+			}else{
+				groupOwnName = "";
+			}
+
+			mapName.put(groupName, groupOwnName);
+		}
+
+		
+		return mapName;
+	}
 	
 }
