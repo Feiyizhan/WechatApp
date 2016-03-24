@@ -69,10 +69,18 @@ public class MessageUtil {
 		List<String> contents = new ArrayList<String>();
 		if(content!=null){
 			int index = content.indexOf(":<br/>");
-			String id = content.substring(0,index);
-			String val = content.substring(index+":<br/>".length());
-			contents.add(id);
-			contents.add(val);
+			if(index >=0){
+				String id = content.substring(0,index);
+				String val = content.substring(index+":<br/>".length());
+				contents.add(id);
+				contents.add(val);
+			}else{
+				contents.add(content);
+			}
+			
+			
+
+			
 			
 			return contents;
 		}else{
