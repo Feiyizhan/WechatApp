@@ -87,7 +87,7 @@ public class CmdTextMessageHandle extends TextMesageHandle {
 				if(toUserID.startsWith("@@")){ // 接收者是群
 					return this.handleGroup(fromUserID, toUserID, content, currUserID);
 				}else{
-					return false;
+					return this.handleOther(fromUserID, toUserID, content, currUserID);
 				}
 				
 			}
@@ -106,7 +106,7 @@ public class CmdTextMessageHandle extends TextMesageHandle {
 	}
 	
 	/**
-	 * 群消息处理
+	 * 处理发送给群的命令
 	 * @param fromUserID
 	 * @param toUserID
 	 * @param content
@@ -127,7 +127,7 @@ public class CmdTextMessageHandle extends TextMesageHandle {
 	}
 
 	/**
-	 * 处理自己发给自己的消息
+	 * 处理自己发给自己的命令
 	 * @param fromUserID
 	 * @param toUserID
 	 * @param content
@@ -143,7 +143,22 @@ public class CmdTextMessageHandle extends TextMesageHandle {
 		return false;
 	}
 
-
+	/**
+	 * 处理自己发个其他人的命令
+	 * @param fromUserID
+	 * @param toUserID
+	 * @param content
+	 * @param currUserID
+	 * @return
+	 */
+	private boolean handleOther(String fromUserID,String toUserID,String content,String currUserID){
+		for(BaseCmdProcess process:this.processList){
+			if(process.process(fromUserID, toUserID, content, currUserID)){
+				return true;
+			}
+		}
+		return false;
+	}
 
 
 	
