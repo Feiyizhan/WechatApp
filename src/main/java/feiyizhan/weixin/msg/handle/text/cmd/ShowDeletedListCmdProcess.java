@@ -148,6 +148,9 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 				continue;
 			}  
 			
+			if(name.startsWith("B-B-")){//已处理的标注的略过
+				continue;
+			}  
 			
 			list.add(id);
 			
@@ -172,7 +175,7 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 					break;
 				}
 				try {
-					Thread.sleep(1000*60*10);
+					Thread.sleep(1000*60*15);
 				} catch (InterruptedException e) {
 				}
 				
@@ -222,13 +225,13 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 				String memberID =UserUtil.getUserID(memberObj);
 				int memberStatus = memberObj.getInt("MemberStatus",-1);
 				if(memberStatus!=4){  //被删除的用户无法入群
-					list.remove(memberID);
+					list.remove(memberID);  //入群成功的，为未删除的用户，从删除清单中除去
 					markProcessed(memberObj);
 				}else{
-					markDeleted(memberObj);
+					markDeleted(memberObj);  // 已删除的用户
 				}
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(1000*5);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
