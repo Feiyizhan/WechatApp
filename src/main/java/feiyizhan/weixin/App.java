@@ -137,7 +137,7 @@ public class App {
 	
 	public static void main(String[] args) throws InterruptedException {
 
-		System.out.println(JSUtil.getPushServer("wx.qq.com"));
+		LOGGER.info("[*] App 启动");
 
 		App app = new App();
 		String uuid = app.userSession.getUUID();
@@ -152,6 +152,8 @@ public class App {
 			if(app.sessionID.equals("system")){ //前台模式
 				app.showQrCode();
 			}
+			
+			LOGGER.debug("[*] sessionID："+app.sessionID );
 			
 			app.appControl.sendUUID(uuid,app.sessionID);
 			
