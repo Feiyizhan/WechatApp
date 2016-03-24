@@ -824,12 +824,10 @@ public class UserSession {
 		 *  2 -- 群
 		 *  3 -- 公众号
 		 */
-		if(null!=group&&2==group.getInt("ContactFlag",-1)){
+
 			JSONArray memberList = UserUtil.getGroupMemberList(group);
 			return UserUtil.findUserObjectByID(memberList,  id);
-		}
-		
-		return null;
+
 		
 	}
 	
