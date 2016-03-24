@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.commons.io.FileUtils;
 
@@ -19,6 +21,7 @@ import blade.kit.logging.Logger;
 import blade.kit.logging.LoggerFactory;
 import feiyizhan.api.tuling.TulingUtil;
 import feiyizhan.weixin.msg.handle.MessageHandleImpl;
+import feiyizhan.weixin.msg.handle.link.NormalLinkMessageHandle;
 import feiyizhan.weixin.msg.handle.text.CmdTextMessageHandle;
 import feiyizhan.weixin.msg.handle.text.NormalTextMessageHandle;
 import feiyizhan.weixin.msg.handle.text.TextMesageHandle;
@@ -48,7 +51,7 @@ public class AppControl {
 	/**
 	 * 关键字消息提醒-指定的群列表（
 	 */
-	public JSONArray RemindGroupList = new JSONArray();
+	public JSONArray RemindGroupMsgList = new JSONArray();
 	
 	/**
 	 * 关键字消息列表
@@ -74,6 +77,17 @@ public class AppControl {
 	 * 消息处理器列表
 	 */
 	public List<MessageHandleImpl> handleList;
+	
+	
+	/**
+	 * 提醒群主功能
+	 */
+	public boolean remindGroupOwnSwitch = false;
+	
+	/**
+	 * 提醒群列表
+	 */
+	public Map<String,String> remindGroupOwnList = new TreeMap<String,String>();
 	
 	
 	/**
@@ -104,6 +118,8 @@ public class AppControl {
 		this.handleList.add(new CmdTextMessageHandle(this.userSession, this));
 		//增加普通文本消息处理器
 		this.handleList.add(new NormalTextMessageHandle(this.userSession, this));
+		//增加链接消息处理器 
+		this.handleList.add(new NormalLinkMessageHandle(this.userSession,this));
 	}
 
 
@@ -133,7 +149,7 @@ public class AppControl {
 			//检查当前消息的群是否在联系人列表里，不在的更新
 			String toUserID = MessageUtil.getToUserID(msg);
 			String fromUserID = MessageUtil.getFromUserID(msg);
-			this.userSession.updateMemberList(toUserID);
+			this.userSession.updateMemberList(toUserID);  //存在BUG，未更新其他控制器中的群信息
 			this.userSession.updateMemberList(fromUserID);
 			
 			for(MessageHandleImpl mh:this.handleList){
@@ -202,16 +218,21 @@ public class AppControl {
 		String mangerString =JSONUtil.getStringValues(this.MangerUsrList, UserUtil.NAMES_KEYS);
 		sb.append("当前总控用户清单【"+mangerString+"】\n");
 		
-		String groupString =JSONUtil.getStringValues(this.RemindGroupList, UserUtil.NAMES_KEYS);
+		String groupString =JSONUtil.getStringValues(this.RemindGroupMsgList, UserUtil.NAMES_KEYS);
 		sb.append("当前监控消息的群清单【"+groupString+"】\n");
 		
 		String autoUserString =JSONUtil.getStringValues(this.AutoReceiveUserList, UserUtil.NAMES_KEYS);
 		sb.append("当前自动答复消息的用户清单【"+autoUserString+"】\n");
 		
+		String remindGroupOwnString =UserUtil.convertGroupMapIDtoMapName(this.remindGroupOwnList, this.userSession.GrouptList).toString();
+		sb.append("当前群主提醒的群清单【"+remindGroupOwnString+"】\n");
+		
 		sb.append(null==this.ToolsGroup?"还未设置工具群\n":"当前工具群【"+UserUtil.getUserRemarkName(this.ToolsGroup)+"】\n");
 		sb.append(this.autoReceiveFlag?"开启了自动答复\n":"没有开启自动答复\n");
 		sb.append(this.forwordFlag?"开启了消息转发\n":"没有开启消息转发"+"\n");
 		sb.append(this.keyWorkFlag?"开启了关键字提醒\n":"没有开启关键字提醒"+"\n");
+		sb.append(this.remindGroupOwnSwitch?"开启了群主提醒\n":"没有开启群主提醒"+"\n");
+		sb.append(this.batchFlag?"开启获取删除我的用户清单JOB\n":"没有开启获取删除我的用户清单JOB"+"\n");
 		
 		
 		return sb.toString();

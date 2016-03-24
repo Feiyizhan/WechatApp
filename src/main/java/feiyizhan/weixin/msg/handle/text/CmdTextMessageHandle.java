@@ -19,6 +19,7 @@ import feiyizhan.weixin.msg.handle.text.cmd.HelpCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.MangerCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.ReFlashUserCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.RemindGroupCmdProcess;
+import feiyizhan.weixin.msg.handle.text.cmd.RemindGroupOwnCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.RemindSwitchCmdProess;
 import feiyizhan.weixin.msg.handle.text.cmd.RemindWordCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.ShowDeletedListCmdProcess;
@@ -52,6 +53,7 @@ public class CmdTextMessageHandle extends TextMesageHandle {
 		this.processList.add(new AutoReceiveUserCmdProcess(this)); //注册自动答复用户清单管理命令处理模块
 		this.processList.add(new ShowGroupDetailCmdProcess(this));//注册显示群明细命令处理模块
 		this.processList.add(new ReFlashUserCmdProcess(this)); //注册更新当前用户信息命令处理模块
+		this.processList.add(new RemindGroupOwnCmdProcess(this)); //注册提醒群主命令处理模块
 		
 	}
 	
@@ -66,10 +68,7 @@ public class CmdTextMessageHandle extends TextMesageHandle {
 	@Override
 	public boolean handleMessage(JSONObject msg) {
 		// TODO 自动生成的方法存根
-		if(!isMe(msg)){
-			return false;
-		}
-		if(this.filterMessage(msg)){
+		if(!check(msg)){
 			return false;
 		}
 		String fromUserID=MessageUtil.getFromUserID(msg);
