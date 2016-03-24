@@ -5,28 +5,31 @@
   <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">  
      <layout class="ch.qos.logback.classic.PatternLayout">  
        <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n</pattern>  
+       <charset>UTF-8</charset>
      </layout>  
    </appender>  
  
  <!-- 所有日志文件-->
  <appender name="AllLog" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
   <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-   <fileNamePattern>WecharApp/log/all/%d{yyyy-MM-dd}.log</fileNamePattern> 
+   <fileNamePattern>WechatApp/log/all/%d{yyyy-MM-dd}.log</fileNamePattern> 
    <maxHistory>30</maxHistory> 
   </rollingPolicy> 
   <encoder> 
    <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n</pattern> 
+   <charset>UTF-8</charset>
   </encoder> 
  </appender>
  
   <!-- 调试日志文件-->
  <appender name="DebugLog" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
   <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-   <fileNamePattern>WecharApp/log/all/debug-%d{yyyy-MM-dd}.log</fileNamePattern> 
+   <fileNamePattern>WechatApp/log/all/debug-%d{yyyy-MM-dd}.log</fileNamePattern> 
    <maxHistory>30</maxHistory> 
   </rollingPolicy> 
   <encoder> 
    <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n</pattern> 
+   <charset>UTF-8</charset>
   </encoder> 
  </appender>
  
