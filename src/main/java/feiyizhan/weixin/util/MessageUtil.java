@@ -66,13 +66,17 @@ public class MessageUtil {
 	 * @return
 	 */
 	public static List<String> resolveGroupContent(String content){
+		List<String> contents = new ArrayList<String>();
 		if(content!=null){
-			List<String> contents = new ArrayList<String>();
-			contents= Arrays.asList(content.split("<br/>", 1));
+			int index = content.indexOf(":<br/>");
+			String id = content.substring(0,index);
+			String val = content.substring(index+":<br/>".length());
+			contents.add(id);
+			contents.add(val);
 			
 			return contents;
 		}else{
-			return null ;
+			return contents ;
 		}
 	}
 

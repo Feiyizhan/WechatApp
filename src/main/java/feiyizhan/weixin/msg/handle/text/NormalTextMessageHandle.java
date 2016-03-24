@@ -107,8 +107,7 @@ public class NormalTextMessageHandle extends TextMesageHandle {
 			if(contents.size()==2){
 				String val = contents.get(1).replace("<br/>", "\n").replaceAll("<[.[^<]]*>","");
 				String id = contents.get(0);
-				contents.remove(0);
-				contents.remove(1);
+				contents= new ArrayList<String>();
 				JSONObject member = getSession().getUserByID(id, fromUserID);
 				if(member!=null){
 					contents.add(UserUtil.getUserRemarkName(member));
@@ -117,6 +116,10 @@ public class NormalTextMessageHandle extends TextMesageHandle {
 					contents.add(id);
 					contents.add(val);
 				}
+			}else if(contents.size()==1){
+				String val = contents.get(0).replace("<br/>", "\n").replaceAll("<[.[^<]]*>","");
+				contents.remove(0);
+				contents.add(val);
 					
 			}else{
 				contents.add(content.replace("<br/>", "\n").replaceAll("<[.[^<]]*>",""));
