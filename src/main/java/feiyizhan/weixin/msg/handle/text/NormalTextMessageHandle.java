@@ -20,10 +20,7 @@ public class NormalTextMessageHandle extends TextMesageHandle {
 	@Override
 	public boolean handleMessage(JSONObject msg) {
 		// TODO 自动生成的方法存根
-		if(!isMe(msg)){
-			return false;
-		}
-		if(this.filterMessage(msg)){
+		if(!check(msg)){
 			return false;
 		}
 		

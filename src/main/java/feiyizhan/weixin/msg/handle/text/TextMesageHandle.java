@@ -56,5 +56,20 @@ public abstract class TextMesageHandle extends BaseMessageHandle{
 		return MESSAGE_TYPE_TEXT;
 	}
 
+	
+	/**
+	 * 检测消息,检测通过返回true
+	 * @param msg
+	 * @return
+	 */
+	public boolean check(JSONObject msg){
+		if(!isMe(msg)){
+			return false;
+		}
+		if(this.filterMessage(msg)){
+			return false;
+		}
+		return true;
+	}
 
 }
