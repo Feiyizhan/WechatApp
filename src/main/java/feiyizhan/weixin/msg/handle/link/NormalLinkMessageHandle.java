@@ -33,7 +33,7 @@ public class NormalLinkMessageHandle extends LinkMessageHandle {
 		if(!check(msg)){
 			return false;
 		}
-		LOGGER.info("[*] 链接消息");
+		LOGGER.info("[*] 普通链接消息");
 		
 		String fromUserID=MessageUtil.getFromUserID(msg);
 		String toUserID=MessageUtil.getToUserID(msg);

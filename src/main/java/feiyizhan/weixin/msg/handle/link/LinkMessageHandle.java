@@ -15,7 +15,7 @@ import feiyizhan.weixin.util.MessageUtil;
  *
  */
 public abstract class LinkMessageHandle extends BaseMessageHandle {
-	private static final Logger LOGGER = LoggerFactory.getLogger(TextMesageHandle.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(LinkMessageHandle.class);
 	/**
 	 * 链接消息类型
 	 */
@@ -27,24 +27,6 @@ public abstract class LinkMessageHandle extends BaseMessageHandle {
 		super(session, control);
 
 	}
-	
-
-	@Override
-	public abstract boolean handleMessage(JSONObject msg) ;
-	
-	/**
-	 * 过滤消息
-	 * @param msg
-	 * @return
-	 */
-	public boolean filterMessage(JSONObject msg){
-		if(this.getSession().isSpaciaUser(MessageUtil.getFromUserID(msg))){ //特殊用户的消息
-			LOGGER.info("[*]特殊用户消息:"+MessageUtil.getFromUserID(msg));
-			return true; 
-		} 
-		return false;
-	}
-	
 
 	@Override
 	public int getMessageType() {
@@ -52,19 +34,5 @@ public abstract class LinkMessageHandle extends BaseMessageHandle {
 		return MESSAGE_TYPE_LINK;
 	}
 	
-	/**
-	 * 检测消息,检测通过返回true
-	 * @param msg
-	 * @return
-	 */
-	public boolean check(JSONObject msg){
-		if(!isMe(msg)){
-			return false;
-		}
-		if(this.filterMessage(msg)){
-			return false;
-		}
-		return true;
-	}
 
 }

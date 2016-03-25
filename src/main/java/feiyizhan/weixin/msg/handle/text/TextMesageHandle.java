@@ -24,31 +24,11 @@ public abstract class TextMesageHandle extends BaseMessageHandle{
 	 */
 	private static final int MESSAGE_TYPE_TEXT = 1;
 	
-
 	
 	public TextMesageHandle(UserSession session, AppControl control) {
 		super(session, control);
 
 	}
-
-
-	
-
-	@Override
-	public abstract boolean handleMessage(JSONObject msg) ;
-	/**
-	 * 过滤消息
-	 * @param msg
-	 * @return
-	 */
-	public boolean filterMessage(JSONObject msg){
-		if(this.getSession().isSpaciaUser(MessageUtil.getFromUserID(msg))){ //特殊用户的消息
-			LOGGER.info("[*]特殊用户消息:"+MessageUtil.getFromUserID(msg));
-			return true; 
-		} 
-		return false;
-	}
-	
 	
 	@Override
 	public int getMessageType() {
@@ -57,19 +37,5 @@ public abstract class TextMesageHandle extends BaseMessageHandle{
 	}
 
 	
-	/**
-	 * 检测消息,检测通过返回true
-	 * @param msg
-	 * @return
-	 */
-	public boolean check(JSONObject msg){
-		if(!isMe(msg)){
-			return false;
-		}
-		if(this.filterMessage(msg)){
-			return false;
-		}
-		return true;
-	}
 
 }
