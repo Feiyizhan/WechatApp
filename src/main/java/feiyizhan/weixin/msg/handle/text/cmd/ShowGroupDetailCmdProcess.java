@@ -2,7 +2,10 @@ package feiyizhan.weixin.msg.handle.text.cmd;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
+import blade.kit.StringKit;
 import blade.kit.json.JSONArray;
 import blade.kit.json.JSONObject;
 import blade.kit.json.JSONValue;
@@ -84,10 +87,11 @@ public class ShowGroupDetailCmdProcess extends BaseCmdProcess {
 		sb.append("总共有【");
 		sb.append(memberList.size());
 		sb.append("】个成员\n");
-		List<String> unisexList = new ArrayList<String>();
-		List<String> maleList = new ArrayList<String>();
-		List<String> femaleList = new ArrayList<String>();
-		List<String> contactList = new ArrayList<String>();
+		List<String> unisexList = new ArrayList<String>();  // 未设置性别
+		List<String> maleList = new ArrayList<String>();  //男性
+		List<String> femaleList = new ArrayList<String>();  //女性
+		List<String> contactList = new ArrayList<String>();  //通讯录统计
+		Map<String,Integer> regionCountMap =  new TreeMap<String,Integer>();  //区域统计
 		for(JSONValue val:memberList){
 			JSONObject member = val.asObject();
 			if(UserUtil.isFound(this.getHandle().getSession().MemberList, member)){  //该用户在个人通讯录里
@@ -111,12 +115,34 @@ public class ShowGroupDetailCmdProcess extends BaseCmdProcess {
 				LOGGER.info("[*]未识别的性别信息"+member);
 			}
 			}
+			
+			//统计地域信息
+			String province = member.getString("Province");  //省
+			if(StringKit.isBlank(province)){
+				province ="未设置省或直辖市";
+			}
+			String city =  member.getString("City");  //市
+			if(StringKit.isBlank(city)){
+				city ="未设置市";
+			}
+			String region = province+"-"+city;
+			Integer regionCount = regionCountMap.get(region);
+			if(regionCount!=null){
+				regionCount++;
+			}else{
+				regionCount=1;
+			}
+			regionCountMap.put(region, regionCount);
+			
+			
 		}
+		
 		sb.append(" 其中有【"+ maleList.size()+"】位男性。\n");
 		sb.append(" 有【"+ femaleList.size()+"】位女性。\n");
 		sb.append(" 有【"+ unisexList.size()+"】位未设置性别。\n");
 		sb.append("分别是："+unisexList+"\n");
 		sb.append(" 有【"+ contactList.size()+"】位已加为好友。\n");
+		sb.append(" 群友的地域分布数据【"+ regionCountMap+"】。\n");
 		return sb.toString();
 		
 		
