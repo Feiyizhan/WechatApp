@@ -21,6 +21,7 @@ import blade.kit.logging.Logger;
 import blade.kit.logging.LoggerFactory;
 import feiyizhan.api.tuling.TulingUtil;
 import feiyizhan.weixin.msg.handle.MessageHandleImpl;
+import feiyizhan.weixin.msg.handle.card.NormalCardMessageHandle;
 import feiyizhan.weixin.msg.handle.link.NormalLinkMessageHandle;
 import feiyizhan.weixin.msg.handle.text.CmdTextMessageHandle;
 import feiyizhan.weixin.msg.handle.text.NormalTextMessageHandle;
@@ -120,6 +121,10 @@ public class AppControl {
 		this.handleList.add(new NormalTextMessageHandle(this.userSession, this));
 		//增加链接消息处理器 
 		this.handleList.add(new NormalLinkMessageHandle(this.userSession,this));
+		
+		//增加名片消息处理器
+		this.handleList.add(new NormalCardMessageHandle(this.userSession,this));
+	
 	}
 
 
