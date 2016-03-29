@@ -41,19 +41,25 @@ public class CmdTextMessageHandle extends TextMesageHandle {
 	public CmdTextMessageHandle(UserSession session,AppControl control){
 		super(session, control);
 		this.processList = new ArrayList<BaseCmdProcess>();
-		this.processList.add(new MangerCmdProcess(this));  //注册主控命令处理模块
-		this.processList.add(new RemindWordCmdProcess(this)); //注册提醒关键字清单管理命令模块
-		this.processList.add(new RemindGroupCmdProcess(this)); //注册消息提醒群清单管理命令模块
-		this.processList.add(new AutoReceiveSwitchCmdProcess(this)); //注册消息自动答复开关命令模块
-		this.processList.add(new ForwordMessageSwitchCmdProcess(this)); //注册消息转发开关命令模块
-		this.processList.add(new RemindSwitchCmdProess(this)); // 注册消息关键字消息提醒开关命令模块
 		this.processList.add(new HelpCmdProcess(this)); // 注册帮助命令模块
 		this.processList.add(new ShowStatusCmdProcess(this)); //注册显示当前状态命令处理模块
-		this.processList.add(new ShowDeletedListCmdProcess(this)); //注册显示删除我的用户清单命令处理模块
+		
+		this.processList.add(new ForwordMessageSwitchCmdProcess(this)); //注册消息转发开关命令模块
+		this.processList.add(new MangerCmdProcess(this));  //注册主控命令处理模块
+		
+		this.processList.add(new RemindSwitchCmdProess(this)); // 注册消息关键字消息提醒开关命令模块
+		this.processList.add(new RemindWordCmdProcess(this)); //注册提醒关键字清单管理命令模块
+		this.processList.add(new RemindGroupCmdProcess(this)); //注册消息提醒群清单管理命令模块
+		
+		this.processList.add(new AutoReceiveSwitchCmdProcess(this)); //注册消息自动答复开关命令模块
 		this.processList.add(new AutoReceiveUserCmdProcess(this)); //注册自动答复用户清单管理命令处理模块
+		
+		this.processList.add(new ShowDeletedListCmdProcess(this)); //注册显示删除我的用户清单命令处理模块
+		
 		this.processList.add(new ShowGroupDetailCmdProcess(this));//注册显示群明细命令处理模块
-		this.processList.add(new ReFlashUserCmdProcess(this)); //注册更新当前用户信息命令处理模块
 		this.processList.add(new RemindGroupOwnCmdProcess(this)); //注册提醒群主命令处理模块
+		
+		this.processList.add(new ReFlashUserCmdProcess(this)); //注册更新当前用户信息命令处理模块
 		
 	}
 	
