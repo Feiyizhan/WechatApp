@@ -32,8 +32,10 @@ public class ShowGroupDetailCmdProcess extends BaseCmdProcess {
 	public String help() {
 		// TODO 自动生成的方法存根
 		StringBuilder sb = new StringBuilder();
+		sb.append("============================\n");
+		sb.append("该命令用于当前群的一些信息。\n");
 		sb.append("显示当前群明细命令:\n");
-		sb.append("--群聊天模式\n");
+		sb.append("--在群聊天界面输入：\n");
 		sb.append("【显示明细】:显示明细  -- 显示当前群成员明细\n");
 		sb.append("【显示地域报告】:显示地域报告  -- 显示当前群成员地域报告\n");
 		sb.append("【显示未改名的群成员】:显示未改名的群成员  -- 显示当前群成员中未改名的清单\n");

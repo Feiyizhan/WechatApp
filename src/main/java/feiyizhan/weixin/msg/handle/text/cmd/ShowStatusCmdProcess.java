@@ -25,9 +25,11 @@ public class ShowStatusCmdProcess extends BaseCmdProcess {
 	public String help() {
 		// TODO 自动生成的方法存根
 		StringBuilder sb = new StringBuilder();
+		sb.append("============================\n");
+		sb.append("显示当前登录用户的一些简单的信息，显示助手当前的状态。\n");
 		sb.append("显示当前状态命令:\n");
-		sb.append("--个人聊天模式\n");
-		sb.append("【显示状态】:显示状态  -- 显示当前状态\n");
+		sb.append("--在和自己的聊天界面下输入：\n");
+		sb.append("【显示状态】:显示状态  -- 显示当前助手的状态\n");
 		return sb.toString();
 	}
 

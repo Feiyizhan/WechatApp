@@ -23,11 +23,15 @@ public class RemindGroupOwnCmdProcess extends BaseCmdProcess {
 	public String help() {
 		// TODO Auto-generated method stub
 		StringBuilder sb = new StringBuilder();
+		sb.append("============================\n");
 		sb.append("群主提醒开关命令:\n");
+		sb.append("该命令用于开启和设置群的广告提醒，在开启了群主提醒功能，并在指定的群设置了允许提醒的人员之后，当该群有人发送了名片消息或链接消息之后，将会自动@设置的提醒人员，提醒对方消息发送者有发送广告的嫌疑。\n");
+		sb.append("--在和自己的聊天界面下输入：\n");
 		sb.append("【开启群主提醒】:开启群主提醒\n");
 		sb.append("【关闭群主提醒】:关闭群主提醒\n");
-		sb.append("【允许提醒】:允许提醒 群主名称\n");
-		sb.append("【不允许提醒】:不允许提醒 群主名称\n");
+		sb.append("--在群聊天界面下输入：\n");
+		sb.append("【允许提醒】:允许提醒 群主名称    -- 增加该群到群主广告提醒的群清单里，并设置群的广告消息提醒者为命令后面指定的人员名称。\n");
+		sb.append("【不允许提醒】:不允许提醒 群主名称    -- 将该群从群主广告提醒的清单里移除。\n");
 		return sb.toString();
 	}
 

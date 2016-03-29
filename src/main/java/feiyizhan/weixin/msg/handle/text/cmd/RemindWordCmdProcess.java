@@ -21,8 +21,10 @@ public class RemindWordCmdProcess extends BaseCmdProcess {
 	public String help() {
 		// TODO 自动生成的方法存根
 		StringBuilder sb = new StringBuilder();
+		sb.append("============================\n");
 		sb.append("提醒关键字清单管理命令:\n");
-		sb.append("--个人聊天模式\n");
+		sb.append("该命令用于管理关键字提醒的清单。\n");
+		sb.append("--在和自己的聊天界面下输入：\n");
 		sb.append("【增加提醒关键字】:增加提醒关键字 关键字\n");
 		sb.append("【删除提醒关键字】:删除提醒关键字 关键字\n");
 		return sb.toString();

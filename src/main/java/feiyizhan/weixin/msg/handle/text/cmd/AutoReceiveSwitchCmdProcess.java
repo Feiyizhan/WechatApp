@@ -21,10 +21,12 @@ public class AutoReceiveSwitchCmdProcess extends BaseCmdProcess {
 	public String help() {
 		// TODO 自动生成的方法存根
 		StringBuilder sb = new StringBuilder();
+		sb.append("============================\n");
 		sb.append("自动答复开关命令:\n");
-		sb.append("--个人聊天模式\n");
-		sb.append("【开启自动答复】:开启自动答复\n");
-		sb.append("【关闭自动答复】:关闭自动答复\n");
+		sb.append("该命令仅在和自己聊天界面下有效。该命令是控制是否开启自动答复这个功能的。只有在该开启自动答复之后，允许自动答复命令才有效\n");
+		sb.append("--在和自己的聊天界面下输入：\n");
+		sb.append("【开启自动答复】:开启自动答复   -- 开启自动答复 \n");
+		sb.append("【关闭自动答复】:关闭自动答复   -- 关闭自动答复\n");
 		return sb.toString();
 	}
 

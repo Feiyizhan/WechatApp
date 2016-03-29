@@ -25,11 +25,13 @@ public class RemindGroupCmdProcess extends BaseCmdProcess {
 	public String help() {
 		// TODO 自动生成的方法存根
 		StringBuilder sb = new StringBuilder();
+		sb.append("============================\n");
 		sb.append("消息提醒群清单管理命令:\n");
-		sb.append("--个人聊天模式\n");
-		sb.append("【增加监控群】:增加监控群 群名称(支持特殊命令参数*ALL -- 所有群)\n");
-		sb.append("【删除监控群】:删除监控群 群名称(支持特殊命令参数*ALL -- 所有群)\n");
-		sb.append("群聊天模式,作用于当前群。\n");
+		sb.append("该命令用于设置监控消息的群清单，当开启关键字提醒消息功能之后，对于该清单的所有群的所有文本消息，满足关键字提醒清单中的关键字列表的，都将会发消息提醒当前登录用户。消息将发送到当前登录用户的和自己的聊天界面。\n");
+		sb.append("--在和自己的聊天界面下输入：\n");
+		sb.append("【增加监控群】:增加监控群 群名称(支持特殊命令参数*ALL -- 所有活跃群)\n");
+		sb.append("【删除监控群】:删除监控群 群名称(支持特殊命令参数*ALL -- 所有活跃群)\n");
+		sb.append("--在群聊天界面下输入：\n");
 		sb.append("【增加监控群】: 增加监控群\n");
 		sb.append("【删除监控群】: 删除监控群 \n");
 		return sb.toString();

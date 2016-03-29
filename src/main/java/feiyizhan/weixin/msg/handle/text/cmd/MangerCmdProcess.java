@@ -25,11 +25,13 @@ public class MangerCmdProcess extends BaseCmdProcess {
 	public String help() {
 		// TODO 自动生成的方法存根
 		StringBuilder sb = new StringBuilder();
-		sb.append("主控管理命令:\n");
-		sb.append("--个人聊天模式\n");
+		sb.append("============================\n");
+		sb.append("主控用户清单管理命令:\n");
+		sb.append("该命令用于增加主控用户清单，目前主控用户清单的用户，在开启了消息转发的功能之后，当前登录帐号的所有的消息都会被转发给主控用户清单的用户。\n");
+		sb.append("--在和自己的聊天界面下输入：\n");
 		sb.append("【增加主控】: 增加主控 主控帐号名称\n");
 		sb.append("【删除主控】: 删除主控 主控帐号名称\n");
-		sb.append("群聊天模式,作用于当前群。\n");
+		sb.append("--其他人的聊天界面,作用于当前用户或者群。\n");
 		sb.append("【增加主控】: 增加主控 \n");
 		sb.append("【删除主控】: 删除主控 \n");
 		return sb.toString();

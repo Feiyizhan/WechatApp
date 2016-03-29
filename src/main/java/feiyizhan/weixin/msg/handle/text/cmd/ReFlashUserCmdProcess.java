@@ -29,8 +29,10 @@ public class ReFlashUserCmdProcess extends BaseCmdProcess {
 	public String help() {
 		// TODO 自动生成的方法存根
 		StringBuilder sb = new StringBuilder();
-		sb.append("更新用户信息命令:\n");
-		sb.append("--群聊天模式\n");
+		sb.append("============================\n");
+		sb.append("更新用户或群信息命令:\n");
+		sb.append("该命令用于更新指定的用户的信息（比如修改了用户的备注信息），或群的信息（比如群内有成员的变动，群名称有变动等等）。\n");
+		sb.append("--其他人的聊天界面,作用于当前用户或者群。\n");
 		sb.append("【更新】:更新  -- 更新当前用户或者群\n");
 		return sb.toString();
 	}

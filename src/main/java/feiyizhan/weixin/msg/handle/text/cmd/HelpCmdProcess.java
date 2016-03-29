@@ -22,8 +22,10 @@ public class HelpCmdProcess extends BaseCmdProcess {
 	public String help() {
 		// TODO 自动生成的方法存根
 		StringBuilder sb = new StringBuilder();
+		sb.append("============================\n");
 		sb.append("帮助命令:\n");
-		sb.append("--个人聊天模式\n");
+		sb.append("显示当前支持的所有命令，和命令的说明。\n");
+		sb.append("--在和自己的聊天界面下输入：\n");
 		sb.append("【帮助】:帮助  -- 显示当前所有支持的命令的帮助信息\n");
 		sb.append("【帮助】:帮助 命令名称 -- 显示命令名称的帮助信息  \n");
 		return sb.toString();

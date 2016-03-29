@@ -21,8 +21,10 @@ public class ForwordMessageSwitchCmdProcess extends BaseCmdProcess {
 	public String help() {
 		// TODO 自动生成的方法存根
 		StringBuilder sb = new StringBuilder();
+		sb.append("============================\n");
 		sb.append("消息转发到主控用户清单及工具群开关命令:\n");
-		sb.append("--个人聊天模式\n");
+		sb.append("该命令将管理消息转发的功能的开启。当开启了消息转发功能之后，对于你接收到的所有的消息（包括群和个人消息）都将发送到你设置的工具群，主控用户清单的所有用户里。\n");
+		sb.append("--在和自己的聊天界面下输入：\n");
 		sb.append("【开启消息转发】:开启消息转发\n");
 		sb.append("【关闭消息转发】:关闭消息转发\n");
 		return sb.toString();

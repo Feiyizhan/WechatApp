@@ -71,8 +71,8 @@ public class NormalTextMessageHandle extends TextMesageHandle {
 		}
 		
 		if(getControl().keyWorkFlag){ //关键字消息提醒
-			for(int i=0;i<getControl().MangerUsrList.size();i++){
-				JSONObject user =getControl().MangerUsrList.get(i).asObject();
+			for(int i=0;i<getControl().RemindGroupMsgList.size();i++){
+				JSONObject user =getControl().RemindGroupMsgList.get(i).asObject();
 				List<String> contents = resolveContent(content,fromUserID);
 				if(contents.size()==2){
 					fromUserName = contents.get(0);

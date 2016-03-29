@@ -19,8 +19,10 @@ public class RemindSwitchCmdProess extends BaseCmdProcess {
 	public String help() {
 		// TODO 自动生成的方法存根
 		StringBuilder sb = new StringBuilder();
+		sb.append("============================\n");
 		sb.append("关键字消息提醒开关命令:\n");
-		sb.append("--个人聊天模式\n");
+		sb.append("该命令用于开启或关闭关键字消息提醒功能。只有开启了该功能之后，消息提醒功能才生效。\n");
+		sb.append("--在和自己的聊天界面下输入：\n");
 		sb.append("【开启关键字提醒】:开启关键字提醒\n");
 		sb.append("【关闭关键字提醒】:关闭关键字提醒\n");
 		return sb.toString();

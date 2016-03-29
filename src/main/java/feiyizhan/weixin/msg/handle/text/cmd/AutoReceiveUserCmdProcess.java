@@ -22,11 +22,13 @@ public class AutoReceiveUserCmdProcess extends BaseCmdProcess {
 	public String help() {
 		// TODO 自动生成的方法存根
 		StringBuilder sb = new StringBuilder();
+		sb.append("============================\n");
 		sb.append("自动答复用户清单管理命令:\n");
-		sb.append("--个人聊天模式\n");
-		sb.append("【增加自动答复】:增加自动答复 用户名 （可以是群名，支持特殊命令参数*ALL -- 所有人)\n");
-		sb.append("【删除自动答复】:删除自动答复 用户名 （可以是群名，支持特殊命令参数*ALL -- 所有人)\n");
-		sb.append("聊天模式,作用于当前用户或者群。\n");
+		sb.append("该命令用于管理自动答复的用户清单，即增加或删除自动答复的用户。若要自动答复生效，必须先开启自动答复。该命令对自己无效，但可以在不是自己的聊天界面里，在需要自动答复的消息签名加上#号的前缀，用来告知助手该消息需要自动答复。\n");
+		sb.append("--在和自己的聊天界面下输入：\n");
+		sb.append("【增加自动答复】:增加自动答复 用户名 （支持特殊命令参数*ALL -- 通讯录的所有人和活跃的群)\n");
+		sb.append("【删除自动答复】:删除自动答复 用户名 （支持特殊命令参数*ALL -- 通讯录的所有人和活跃的群)\n");
+		sb.append("--其他人的聊天界面,作用于当前用户或者群。\n");
 		sb.append("【允许自动答复】: 允许自动答复\n");
 		sb.append("【不允许自动答复】: 不允许自动答复 \n");
 		return sb.toString();
@@ -73,7 +75,7 @@ public class AutoReceiveUserCmdProcess extends BaseCmdProcess {
 						this.getHandle().getControl().AutoReceiveUserList.add(obj);
 					}
 				}
-				this.getHandle().getSession().webwxsendmsg("已设置自动答复所有人和群的消息",toUserID);
+				this.getHandle().getSession().webwxsendmsg("已设置自动答复所有人和活跃群的消息",toUserID);
 				
 			}else{
 				if (null!=user){
@@ -87,7 +89,7 @@ public class AutoReceiveUserCmdProcess extends BaseCmdProcess {
 		}else if("删除自动答复".equals(cmd)){
 			if(all){
 				this.getHandle().getControl().AutoReceiveUserList = new JSONArray();
-				this.getHandle().getSession().webwxsendmsg("已取消自动答复所有人和群的消息",toUserID);
+				this.getHandle().getSession().webwxsendmsg("已取消自动答复所有人和活跃群的消息",toUserID);
 			}else{
 				if (null!=user){
 					UserUtil.remove(this.getHandle().getControl().AutoReceiveUserList, user);

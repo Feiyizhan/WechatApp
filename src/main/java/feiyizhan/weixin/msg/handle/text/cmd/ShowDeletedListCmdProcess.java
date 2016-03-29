@@ -32,9 +32,17 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 	public String help() {
 		// TODO 自动生成的方法存根
 		StringBuilder sb = new StringBuilder();
-		sb.append("显示删除我的联系人清单:\n");
-		sb.append("--个人聊天模式\n");
-		sb.append("【获取删除我的用户清单】:获取删除我的用户清单  -- 显示删除我的用户清单\n");
+		sb.append("============================\n");
+		sb.append("标注删除我的联系人:\n");
+		sb.append("【获取删除我的用户清单】这个指令会根据你的通讯录中的联系人的数量来分批处理，操作方式是每次抽取30个人去创建一个群，"
+				+ "没在这个群里就是删掉你了的人。会自动在该联系人的备注名称前面加上A-A-DEL前缀。同时对于已经甄别过的联系人，也会自动在该联系人的备注名称前加上B-B-的前缀。由于微信接口的安全限制，目前每次请求只能创建两次群，第三次就将失败。"
+				+ "下一次可以创建群的时间，将会是至少8个小时之后。（中途不要再做任何尝试，否则时间将会继续延迟）。每次启动时，将会自动忽略掉已经打过标记的联系人。因此当年的通讯录里所有的人要么都是B-B-开头，要么是A-A-DEL开头的时候，就是完成的时候。"
+				+ "对于创建出来的群，可以不用理会，请在操作结束后删除。\n"
+				+ "注意：不要在创建的群里发任何消息，不要在操作未结束的时候在群里做任何操作。\n"
+				+ "注意：不要在创建的群里发任何消息，不要在操作未结束的时候在群里做任何操作。\n"
+				+ "注意：不要在创建的群里发任何消息，不要在操作未结束的时候在群里做任何操作。\n");
+		sb.append("--在和自己的聊天界面下输入：\n");
+		sb.append("【获取删除我的用户清单】:获取删除我的用户清单  -- 标注删除我的的联系人\n");
 		return sb.toString();
 	}
 
@@ -175,7 +183,7 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 					break;
 				}
 				try {
-					Thread.sleep(1000*60*15);
+					Thread.sleep(1000*60*30);
 				} catch (InterruptedException e) {
 				}
 				
