@@ -139,7 +139,7 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 			}
 			JSONObject obj = val.asObject();
 			String id =UserUtil.getUserID(obj);
-			String name = UserUtil.getUserRemarkName(obj);
+			String name = UserUtil.getUserName(obj);
 			if(id.startsWith("@@")){  // 置顶的群不处理
 				continue;
 			}
@@ -265,7 +265,7 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 	 * @param user
 	 */
 	public void markDeleted(JSONObject user){
-		String name = UserUtil.getUserRemarkName(user);
+		String name = UserUtil.getUserName(user);
 		String remarkName = "A-A-DEL"+name;
 		if(!getHandle().getSession().changeUserRemarkName(user,remarkName)){
 			LOGGER.info("[*]备注失败【"+name+"】");
@@ -277,7 +277,7 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 	 * @param user
 	 */
 	public void markProcessed(JSONObject user){
-		String name = UserUtil.getUserRemarkName(user);
+		String name = UserUtil.getUserName(user);
 		String remarkName = "B-B-"+name;
 		if(!getHandle().getSession().changeUserRemarkName(user,remarkName)){
 			LOGGER.info("[*]备注失败【"+name+"】");

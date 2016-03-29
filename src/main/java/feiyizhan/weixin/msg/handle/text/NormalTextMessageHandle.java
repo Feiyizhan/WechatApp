@@ -107,7 +107,7 @@ public class NormalTextMessageHandle extends TextMesageHandle {
 				contents= new ArrayList<String>();
 				JSONObject member = getSession().getUserByID(id, fromUserID);
 				if(member!=null){
-					contents.add(UserUtil.getUserRemarkName(member));
+					contents.add(UserUtil.getUserName(member));
 					contents.add(val);
 				}else{
 					contents.add(id);

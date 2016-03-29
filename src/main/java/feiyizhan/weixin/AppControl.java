@@ -205,7 +205,7 @@ public class AppControl {
 	 */
 	public String getStatus(){
 		StringBuilder sb = new StringBuilder();
-		sb.append("当前登录用户【 "+UserUtil.getUserRemarkName(userSession.User)+"】\n");
+		sb.append("当前登录用户【 "+UserUtil.getUserName(userSession.User)+"】\n");
 		sb.append("当前用户有【"+userSession.MemberList.size()+"】个联系人\n");
 		int groupCount =0;
 		int otherCount =0;
@@ -232,7 +232,7 @@ public class AppControl {
 		String remindGroupOwnString =UserUtil.convertGroupMapIDtoMapName(this.remindGroupOwnList, this.userSession.GrouptList).toString();
 		sb.append("当前群主提醒的群清单【"+remindGroupOwnString+"】\n");
 		
-		sb.append(null==this.ToolsGroup?"还未设置工具群\n":"当前工具群【"+UserUtil.getUserRemarkName(this.ToolsGroup)+"】\n");
+		sb.append(null==this.ToolsGroup?"还未设置工具群\n":"当前工具群【"+UserUtil.getUserName(this.ToolsGroup)+"】\n");
 		sb.append(this.autoReceiveFlag?"开启了自动答复\n":"没有开启自动答复\n");
 		sb.append(this.forwordFlag?"开启了消息转发\n":"没有开启消息转发"+"\n");
 		sb.append(this.keyWorkFlag?"开启了关键字提醒\n":"没有开启关键字提醒"+"\n");

@@ -53,7 +53,7 @@ public class NormalCardMessageHandle extends CardMessageHandle {
 					//获取群主
 					JSONObject groupOwn = getSession().getGroupMemberUserByID(group, groupOwnID);
 					//获取群主名称
-					String groupOwnName = UserUtil.getUserRemarkName(groupOwn);
+					String groupOwnName = UserUtil.getUserName(groupOwn);
 					//获取消息发送者的ID
 					String sendMsgUserID = contents.get(0);
 					
@@ -61,7 +61,7 @@ public class NormalCardMessageHandle extends CardMessageHandle {
 					JSONObject sendMsgUser = getSession().getGroupMemberUserByID(group, sendMsgUserID);
 					
 					//获取消息发送者的名称
-					String sendMsgUserName =UserUtil.getUserRemarkName(sendMsgUser);
+					String sendMsgUserName =UserUtil.getUserName(sendMsgUser);
 					
 					
 					String receiveMsgStr = "@"+groupOwnName+" "+

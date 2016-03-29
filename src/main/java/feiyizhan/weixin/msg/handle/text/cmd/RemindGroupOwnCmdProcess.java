@@ -44,11 +44,11 @@ public class RemindGroupOwnCmdProcess extends BaseCmdProcess {
 			cmd =cmds[0];
 			val = cmds[1];
 			group=this.getHandle().getSession().getUserByID(toUserID, null);
-			groupName =UserUtil.getUserRemarkName(group);
+			groupName =UserUtil.getUserName(group);
 		}else if(cmds.length==1){
 			cmd =  cmds[0];
 			group=this.getHandle().getSession().getUserByID(toUserID, null);
-			groupName =UserUtil.getUserRemarkName(group);
+			groupName =UserUtil.getUserName(group);
 		}else{
 			return false;
 		}

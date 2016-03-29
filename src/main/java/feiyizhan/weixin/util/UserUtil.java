@@ -25,11 +25,12 @@ public class UserUtil {
 	public static final List<String> NAMES_KEYS = Arrays.asList("RemarkName","NickName");
 
 	/**
-	 * 获取用户名，如果用户有备注名，返回备注名，没有返回用户名。
+	 * 获取通讯录用户名，如果用户有备注名，返回备注名，没有返回用户名。
+	 * 对群用户，如果有修改显示名称，则返回显示名，没有则参考通讯录用户。
 	 * @param user
 	 * @return
 	 */
-	public static String getUserRemarkName(JSONObject user){
+	public static String getUserName(JSONObject user){
 		String name = "这个人物名字未知";
 		if(null!=user){
 			if(StringKit.isNotBlank(user.getString("DisplayName"))){
@@ -41,6 +42,56 @@ public class UserUtil {
 			}
 		}
 		return name.replaceAll("<[.[^<]]*>","");
+	}
+	
+	
+	/**
+	 * 获取用户显示名称
+	 * @param user
+	 * @return
+	 */
+	public static String getDisplayName(JSONObject user){
+		String name = "";
+		if(null!=user){
+			if(StringKit.isNotBlank(user.getString("DisplayName"))){
+				name = user.getString("DisplayName");
+			}
+		}
+		return name.replaceAll("<[.[^<]]*>","");
+		
+	}
+	
+	/**
+	 * 获取用户备注名称
+	 * @param user
+	 * @return
+	 */
+	public static String getNickName(JSONObject user){
+		String name = "";
+		if(null!=user){
+			if(StringKit.isNotBlank(user.getString("NickName"))){
+				name = user.getString("NickName");
+			}
+		}
+		return name.replaceAll("<[.[^<]]*>","");
+		
+	}
+	
+	
+	/**
+	 * 获取用户名称
+	 * @param user
+	 * @return
+	 */
+	public static String getRemarkName(JSONObject user){
+		String name = "";
+		if(null!=user){
+			if(StringKit.isNotBlank(user.getString("RemarkName"))){
+				name = user.getString("RemarkName");
+			}
+		}
+		return name.replaceAll("<[.[^<]]*>","");
+		
 	}
 	
 	/**
@@ -284,13 +335,13 @@ public class UserUtil {
 			String groupOwnName ="";
 			//获取群对象
 			JSONObject group = findUserObjectByID(groupList, key);
-			groupName = getUserRemarkName(group);
+			groupName = getUserName(group);
 			//获取群成员对象
 			JSONArray memberList = getGroupMemberList(group);
 			//获取群主对象
 			JSONObject groupOwn = findUserObjectByID(memberList, groupOwnID);
 			if(groupOwn!=null){
-				groupOwnName = getUserRemarkName(groupOwn);
+				groupOwnName = getUserName(groupOwn);
 			}else{
 				groupOwnName = "";
 			}

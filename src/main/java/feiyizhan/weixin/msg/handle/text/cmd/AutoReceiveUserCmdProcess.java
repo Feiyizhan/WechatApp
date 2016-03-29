@@ -55,7 +55,7 @@ public class AutoReceiveUserCmdProcess extends BaseCmdProcess {
 		}else if(cmds.length==1){
 			cmd =  cmds[0];
 			user=this.getHandle().getSession().getUserByID(toUserID, null);
-			name =UserUtil.getUserRemarkName(user);
+			name =UserUtil.getUserName(user);
 		}else{
 			return false;
 		}

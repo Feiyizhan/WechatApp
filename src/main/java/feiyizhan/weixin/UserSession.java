@@ -712,7 +712,7 @@ public class UserSession {
 	 * @return
 	 */
 	public String getUserName(String id,String groupID){
-		return UserUtil.getUserRemarkName(getUserByID(id,groupID));
+		return UserUtil.getUserName(getUserByID(id,groupID));
 	}
 	
 	/**
@@ -799,7 +799,7 @@ public class UserSession {
 	 * @return
 	 */
 	public String getGroupRemarkName(String id) {
-		return UserUtil.getUserRemarkName(getGroup(id));
+		return UserUtil.getUserName(getGroup(id));
 	}
 	
 	/**

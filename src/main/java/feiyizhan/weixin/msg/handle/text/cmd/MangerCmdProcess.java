@@ -52,7 +52,7 @@ public class MangerCmdProcess extends BaseCmdProcess {
 		}else if(cmds.length==1){
 			cmd =  cmds[0];
 			manger=this.getHandle().getSession().getUserByID(toUserID, null);
-			name =UserUtil.getUserRemarkName(manger);
+			name =UserUtil.getUserName(manger);
 		}else{
 			return false;
 		}
