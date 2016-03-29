@@ -44,6 +44,12 @@ public class NormalTextMessageHandle extends TextMesageHandle {
 				getSession().webwxsendmsg("【小白机器人】：\n"+ans, fromUserID);
 				
 				
+			}else if(currUserID.equals(fromUserID)){ //自己发的消息，特殊处理
+				if(content.startsWith("#")){  //以#开始
+					content = content.substring(1);
+					String ans = TulingUtil.tuling(fromUserName, content);
+					getSession().webwxsendmsg("【小白机器人】：\n"+ans, toUserID);
+				}
 			}
 		}
 		if(getControl().forwordFlag==true){   //消息转发处理
