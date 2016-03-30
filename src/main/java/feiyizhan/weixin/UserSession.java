@@ -843,12 +843,9 @@ public class UserSession {
 		 *  2 -- 群
 		 *  3 -- 公众号
 		 */
-		if(null!=group&&2==group.getInt("ContactFlag",-1)){
-			JSONArray memberList =  UserUtil.getGroupMemberList(group);
-			return UserUtil.findUserObjectByName(memberList,  name);
-		}
-		
-		return null;
+		JSONArray memberList =  UserUtil.getGroupMemberList(group);
+		return UserUtil.findUserObjectByName(memberList,  name);
+
 		
 	}
 	
@@ -999,6 +996,10 @@ public class UserSession {
 				case 29:{ //企业号
 					this.GongZongList.add(contact);
 					this.QiYeList.add(contact);
+					break;
+				}
+				case 28:{ //优衣库微信号
+					LOGGER.info("[*]特殊的类型|"+contact);
 					break;
 				}
 				default:{ //其他未识别
