@@ -1,6 +1,8 @@
 <!-- if debug set to true, context info always print
  otherwise the contex info will print when error occour -->
 <configuration scan="true" scanPeriod="60 seconds" debug="false"> 
+<!-- 设置一个时间戳的变量 -->
+<timestamp key="bySecond" datePattern="yyyy-MM-dd'T'HHmmsssss"/>
 
   <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">  
      <layout class="ch.qos.logback.classic.PatternLayout">  
@@ -10,11 +12,12 @@
    </appender>  
  
  <!-- 所有日志文件-->
- <appender name="AllLog" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
-  <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-   <fileNamePattern>WechatApp/log/all/%d{yyyy-MM-dd}.log</fileNamePattern> 
+ <appender name="AllLog" class="ch.qos.logback.core.FileAppender"> 
+<!--   <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+   <fileNamePattern>WechatApp/log/all/${bySecond}.log</fileNamePattern> 
    <maxHistory>30</maxHistory> 
-  </rollingPolicy> 
+  </rollingPolicy>  -->
+   <file>WechatApp/log/all/all-${bySecond}.log</file>
   <encoder> 
    <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n</pattern> 
    <charset>UTF-8</charset>
@@ -22,11 +25,12 @@
  </appender>
  
   <!-- 调试日志文件-->
- <appender name="DebugLog" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
-  <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-   <fileNamePattern>WechatApp/log/all/debug-%d{yyyy-MM-dd}.log</fileNamePattern> 
+ <appender name="DebugLog" class="ch.qos.logback.core.FileAppender"> 
+<!--   <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+   <fileNamePattern>WechatApp/log/all/debug-${bySecond}.log</fileNamePattern> 
    <maxHistory>30</maxHistory> 
-  </rollingPolicy> 
+  </rollingPolicy>  -->
+   <file>WechatApp/log/all/debug-${bySecond}.log</file>
   <encoder> 
    <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n</pattern> 
    <charset>UTF-8</charset>
@@ -60,10 +64,10 @@
   <appender-ref ref="SendLog" />
  </logger> -->
  
-  <logger name="feiyizhan" level="debug" additivity="false">
+ <logger name="feiyizhan" level="debug" additivity="false">
   <appender-ref ref="DebugLog" />
   <appender-ref ref="stdout" />
- </logger>
+ </logger> 
  
  <root level="INFO"> 
   <appender-ref ref="stdout" />
