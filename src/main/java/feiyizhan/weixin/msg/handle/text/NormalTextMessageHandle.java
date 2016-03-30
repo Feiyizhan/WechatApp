@@ -57,7 +57,7 @@ public class NormalTextMessageHandle extends TextMesageHandle {
 				JSONObject user =getControl().MangerUsrList.get(i).asObject();
 				List<String> contents = resolveContent(content,fromUserID);
 				if(contents.size()==2){
-					fromUserName = contents.get(0);
+					fromUserName =fromUserName +"-"+ contents.get(0);
 					content = contents.get(1);
 				}else{
 					content = contents.get(0);
@@ -71,11 +71,10 @@ public class NormalTextMessageHandle extends TextMesageHandle {
 		}
 		
 		if(getControl().keyWorkFlag){ //关键字消息提醒
-			for(int i=0;i<getControl().RemindGroupMsgList.size();i++){
-				JSONObject user =getControl().RemindGroupMsgList.get(i).asObject();
+			if(UserUtil.isFoundByID(getControl().RemindGroupMsgList, fromUserID)){
 				List<String> contents = resolveContent(content,fromUserID);
 				if(contents.size()==2){
-					fromUserName = contents.get(0);
+					fromUserName = fromUserName +"-"+ contents.get(0);
 					content = contents.get(1);
 				}else{
 					content = contents.get(0);
