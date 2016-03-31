@@ -64,12 +64,12 @@ public class RemindGroupOwnCmdProcess extends BaseCmdProcess {
 		if("开启群主提醒".equals(cmd)){
 			if(!fromUserID.equals(toUserID)) return false;
 			this.getHandle().getControl().remindGroupOwnSwitch =true;
-			this.getHandle().getSession().webwxsendmsg("已开启群主提醒，如果要关闭，请输入【关闭群主提醒】",fromUserID);
+			this.getHandle().getSession().sendTextMessage("已开启群主提醒，如果要关闭，请输入【关闭群主提醒】",fromUserID);
 			return true;
 		}else if("关闭群主提醒".equals(cmd)){
 			if(!fromUserID.equals(toUserID)) return false;
 			this.getHandle().getControl().remindGroupOwnSwitch =false;
-			this.getHandle().getSession().webwxsendmsg("已关闭群主提醒，如果要关闭，请输入【开启群主提醒】",fromUserID);
+			this.getHandle().getSession().sendTextMessage("已关闭群主提醒，如果要关闭，请输入【开启群主提醒】",fromUserID);
 			return true;
 		}else if("允许提醒".equals(cmd)){
 			if(!toUserID.startsWith("@@")) return false;
@@ -84,23 +84,23 @@ public class RemindGroupOwnCmdProcess extends BaseCmdProcess {
 					}else{
 						this.getHandle().getControl().remindGroupOwnList.put(toUserID, groupOwnID);
 					}
-					this.getHandle().getSession().webwxsendmsg("增加【"+groupName+"】群的群主提醒功能成功",toUserID);	
+					this.getHandle().getSession().sendTextMessage("增加【"+groupName+"】群的群主提醒功能成功",toUserID);	
 				}else{
-					this.getHandle().getSession().webwxsendmsg("【"+val+"】不在群里",toUserID);	
+					this.getHandle().getSession().sendTextMessage("【"+val+"】不在群里",toUserID);	
 				}
 
 				
 			}else{
-				this.getHandle().getSession().webwxsendmsg("你没有加入【"+groupName+"】群",fromUserID);
+				this.getHandle().getSession().sendTextMessage("你没有加入【"+groupName+"】群",fromUserID);
 			}
 			return true;
 		}else if("不允许提醒".equals(cmd)){
 			if(!toUserID.startsWith("@@")) return false;
 			if (null!=group){
 				this.getHandle().getControl().remindGroupOwnList.remove(toUserID);
-				this.getHandle().getSession().webwxsendmsg("删除【"+groupName+"】群的群主提醒功能成功",toUserID);	
+				this.getHandle().getSession().sendTextMessage("删除【"+groupName+"】群的群主提醒功能成功",toUserID);	
 			}else{
-				this.getHandle().getSession().webwxsendmsg("你没有加入【"+groupName+"】群",fromUserID);
+				this.getHandle().getSession().sendTextMessage("你没有加入【"+groupName+"】群",fromUserID);
 			}
 			return true;
 		}else{

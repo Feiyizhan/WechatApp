@@ -65,16 +65,16 @@ public class ShowGroupDetailCmdProcess extends BaseCmdProcess {
 		}
 		
 		if("显示明细".equals(cmd)){
-			this.getHandle().getSession().webwxsendmsg(getGroupDetail(this.getHandle().getSession().getGroup(toUserID)),toUserID);
+			this.getHandle().getSession().sendTextMessage(getGroupDetail(this.getHandle().getSession().getGroup(toUserID)),toUserID);
 			return true;
 		}else if("显示地域报告".equals(cmd))	{
-			this.getHandle().getSession().webwxsendmsg(getGroupRegionDetail(this.getHandle().getSession().getGroup(toUserID)),toUserID);
+			this.getHandle().getSession().sendTextMessage(getGroupRegionDetail(this.getHandle().getSession().getGroup(toUserID)),toUserID);
 			return true;
 		}else if("显示未改名的群成员".equals(cmd))	{
-			this.getHandle().getSession().webwxsendmsg(getGroupDoNotChangeNameDetail(this.getHandle().getSession().getGroup(toUserID)),toUserID);
+			this.getHandle().getSession().sendTextMessage(getGroupDoNotChangeNameDetail(this.getHandle().getSession().getGroup(toUserID)),toUserID);
 			return true;
 		}else if("显示不符合群名规则的群成员".equals(cmd))	{
-			this.getHandle().getSession().webwxsendmsg(getGroupNonConfirmNameDetail(this.getHandle().getSession().getGroup(toUserID),prefix),toUserID);
+			this.getHandle().getSession().sendTextMessage(getGroupNonConfirmNameDetail(this.getHandle().getSession().getGroup(toUserID),prefix),toUserID);
 			return true;
 		}else{
 			return false;

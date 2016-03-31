@@ -19,7 +19,7 @@ public abstract class LinkMessageHandle extends BaseMessageHandle {
 	/**
 	 * 链接消息类型
 	 */
-	private static final int MESSAGE_TYPE_LINK = 49;
+	private static final int MESSAGE_TYPE = 49;
 	
 
 	
@@ -31,7 +31,7 @@ public abstract class LinkMessageHandle extends BaseMessageHandle {
 	@Override
 	public int getMessageType() {
 		// TODO Auto-generated method stub
-		return MESSAGE_TYPE_LINK;
+		return MESSAGE_TYPE;
 	}
 	
 

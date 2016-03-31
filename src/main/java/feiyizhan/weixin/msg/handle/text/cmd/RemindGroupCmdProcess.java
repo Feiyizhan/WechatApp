@@ -77,27 +77,27 @@ public class RemindGroupCmdProcess extends BaseCmdProcess {
 						this.getHandle().getControl().RemindGroupMsgList.add(obj);
 					}
 				}
-				this.getHandle().getSession().webwxsendmsg("已设置监控所有群消息",toUserID);
+				this.getHandle().getSession().sendTextMessage("已设置监控所有群消息",toUserID);
 				
 			}else{
 				if (null!=user){
 					UserUtil.add(this.getHandle().getControl().RemindGroupMsgList, user);
-					this.getHandle().getSession().webwxsendmsg("增加【"+name+"】群消息监控成功",toUserID);	
+					this.getHandle().getSession().sendTextMessage("增加【"+name+"】群消息监控成功",toUserID);	
 				}else{
-					this.getHandle().getSession().webwxsendmsg("你没有加入【"+name+"】群",fromUserID);
+					this.getHandle().getSession().sendTextMessage("你没有加入【"+name+"】群",fromUserID);
 				}
 			}
 			return true ;
 		}else if("删除监控群".equals(cmd)){
 			if(all){
 				this.getHandle().getControl().RemindGroupMsgList = new JSONArray();
-				this.getHandle().getSession().webwxsendmsg("已取消监控所有群消息",toUserID);
+				this.getHandle().getSession().sendTextMessage("已取消监控所有群消息",toUserID);
 			}else{
 				if (null!=user){
 					UserUtil.remove(this.getHandle().getControl().RemindGroupMsgList, user);
-					this.getHandle().getSession().webwxsendmsg("删除【"+name+"】群消息监控成功",toUserID);
+					this.getHandle().getSession().sendTextMessage("删除【"+name+"】群消息监控成功",toUserID);
 				}else{
-					this.getHandle().getSession().webwxsendmsg("你没有加入【"+name+"】群",fromUserID);
+					this.getHandle().getSession().sendTextMessage("你没有加入【"+name+"】群",fromUserID);
 				}
 			}
 			return true;

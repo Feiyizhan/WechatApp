@@ -74,7 +74,7 @@ public class NormalLinkMessageHandle extends LinkMessageHandle {
 										"有发送广告嫌疑"+
 										"\n";
 					//给群主发送提醒消息
-					getSession().webwxsendmsg(receiveMsgStr, fromUserID);
+					getSession().sendTextMessage(receiveMsgStr, fromUserID);
 				
 
 				}

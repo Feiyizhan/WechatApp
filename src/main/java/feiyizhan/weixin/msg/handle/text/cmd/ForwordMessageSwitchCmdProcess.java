@@ -50,11 +50,11 @@ public class ForwordMessageSwitchCmdProcess extends BaseCmdProcess {
 		
 		if("开启消息转发".equals(cmd)){
 			this.getHandle().getControl().forwordFlag=true;
-			this.getHandle().getSession().webwxsendmsg("已开启消息转发，如果要关闭，请输入【关闭消息转发】",toUserID);
+			this.getHandle().getSession().sendTextMessage("已开启消息转发，如果要关闭，请输入【关闭消息转发】",toUserID);
 			return true;
 		}else if("关闭消息转发".equals(cmd)){
 			this.getHandle().getControl().forwordFlag=false;
-			this.getHandle().getSession().webwxsendmsg("已关闭消息转发，如果要开启，请输入【开启消息转发】",toUserID);
+			this.getHandle().getSession().sendTextMessage("已关闭消息转发，如果要开启，请输入【开启消息转发】",toUserID);
 			return true;
 		}else{
 			return false;

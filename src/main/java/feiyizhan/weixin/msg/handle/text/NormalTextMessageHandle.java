@@ -41,14 +41,14 @@ public class NormalTextMessageHandle extends TextMesageHandle {
 				}
 				
 				String ans = TulingUtil.tuling(fromUserName, content);
-				getSession().webwxsendmsg("【小白机器人】：\n"+ans, fromUserID);
+				getSession().sendTextMessage("【小白机器人】：\n"+ans, fromUserID);
 				
 				
 			}else if(currUserID.equals(fromUserID)){ //自己发的消息，特殊处理
 				if(content.startsWith("#")){  //以#开始
 					content = content.substring(1);
 					String ans = TulingUtil.tuling(fromUserName, content);
-					getSession().webwxsendmsg("【小白机器人】：\n"+ans, toUserID);
+					getSession().sendTextMessage("【小白机器人】：\n"+ans, toUserID);
 				}
 			}
 		}
@@ -63,7 +63,7 @@ public class NormalTextMessageHandle extends TextMesageHandle {
 					content = contents.get(0);
 				}
 
-				getSession().webwxsendmsg("【转发消息】：\n"+
+				getSession().sendTextMessage("【转发消息】：\n"+
 						"From:"+fromUserName+"\n"+
 						"Content:"+content
 						,UserUtil.getUserID(user));
@@ -81,7 +81,7 @@ public class NormalTextMessageHandle extends TextMesageHandle {
 				}
 				for(String str:getControl().keyWordList){
 					if(content.indexOf(str)>=0){
-						getSession().webwxsendmsg(
+						getSession().sendTextMessage(
 							"【重要消息提醒】：\n"+
 							"来自【"+fromUserName+"】的消息【"+content.replace("<br/>", "\n")+"】"
 							, currUserID);

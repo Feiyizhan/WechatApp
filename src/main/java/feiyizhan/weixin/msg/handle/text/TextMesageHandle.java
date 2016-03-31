@@ -22,7 +22,7 @@ public abstract class TextMesageHandle extends BaseMessageHandle{
 	/**
 	 * 文本消息类型
 	 */
-	private static final int MESSAGE_TYPE_TEXT = 1;
+	private static final int MESSAGE_TYPE = 1;
 	
 	
 	public TextMesageHandle(UserSession session, AppControl control) {
@@ -32,10 +32,9 @@ public abstract class TextMesageHandle extends BaseMessageHandle{
 	
 	@Override
 	public int getMessageType() {
-		// TODO 自动生成的方法存根
-		return MESSAGE_TYPE_TEXT;
+		// TODO Auto-generated method stub
+		return MESSAGE_TYPE;
 	}
-
 	
 
 }

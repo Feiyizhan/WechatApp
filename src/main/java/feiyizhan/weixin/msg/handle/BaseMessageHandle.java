@@ -7,6 +7,11 @@ import feiyizhan.weixin.AppControl;
 import feiyizhan.weixin.UserSession;
 import feiyizhan.weixin.util.MessageUtil;
 
+/**
+ * 消息处理器基础类
+ * @author Pluto Xu
+ *
+ */
 public abstract class BaseMessageHandle implements MessageHandleImpl {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BaseMessageHandle.class);
 	private UserSession session ;
@@ -83,4 +88,6 @@ public abstract class BaseMessageHandle implements MessageHandleImpl {
 		// TODO 自动生成的方法存根
 		return this.getMessageType()==MessageUtil.getMessageType(msg);
 	}
+	
+
 }

@@ -246,7 +246,7 @@ public class UserSession {
 						
 						this.synckey = synckey.substring(1);
 						
-						this.webwxsendmsg("登录成功，查询命令，请输入【帮助】。", UserUtil.getUserID(this.User));
+						this.sendTextMessage("登录成功，查询命令，请输入【帮助】。", UserUtil.getUserID(this.User));
 //						
 //						if(null != BaseResponse){
 //							for(int i=0, len=MemberList.size(); i<len; i++){
@@ -570,7 +570,7 @@ public class UserSession {
 						
 						String report = this.getUserReport();
 						LOGGER.info("[*]",report);
-						this.webwxsendmsg(report, UserUtil.getUserID(this.User));
+						this.sendTextMessage(report, UserUtil.getUserID(this.User));
 						
 						
 						return true;
@@ -627,7 +627,7 @@ public class UserSession {
 	 * @param content
 	 * @param to
 	 */
-	public void webwxsendmsg(String content, String to) {
+	public void sendTextMessage(String content, String to) {
 		
 		String url = this.base_uri + "/webwxsendmsg?lang=zh_CN&pass_ticket=" + this.pass_ticket;
 		

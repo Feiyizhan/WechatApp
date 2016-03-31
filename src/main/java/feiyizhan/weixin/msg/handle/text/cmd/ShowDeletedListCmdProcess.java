@@ -86,13 +86,13 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 							LOGGER.debug("[*] "+id + "|"+userName);
 							if(count >=40){
 								count =0;
-								getHandle().getSession().webwxsendmsg(names.toString()+"\n",fromUserID);
+								getHandle().getSession().sendTextMessage(names.toString()+"\n",fromUserID);
 								names = new ArrayList<String>();
 							}
 							
 						}
 						if(count >0){
-							getHandle().getSession().webwxsendmsg(names.toString()+"\n",fromUserID);
+							getHandle().getSession().sendTextMessage(names.toString()+"\n",fromUserID);
 						}
 						sendTextMessage("【系统消息】清单结束 \n",fromUserID);
 	
@@ -265,7 +265,7 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 	 * @param id
 	 */
 	private void sendTextMessage(String msg,String id){
-		getHandle().getSession().webwxsendmsg(msg,id);
+		getHandle().getSession().sendTextMessage(msg,id);
 	}
 	
 	/**

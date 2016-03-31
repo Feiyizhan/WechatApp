@@ -58,7 +58,7 @@ public class HelpCmdProcess extends BaseCmdProcess {
 				for(BaseCmdProcess bp:this.getHandle().getProcessList()){
 					sb.append(bp.help());
 				}
-				this.getHandle().getSession().webwxsendmsg(sb.toString(),toUserID);
+				this.getHandle().getSession().sendTextMessage(sb.toString(),toUserID);
 			 }else{ //显示指定命令的参数
 				StringBuilder sb = new StringBuilder();
 				for(BaseCmdProcess bp:this.getHandle().getProcessList()){
@@ -66,7 +66,7 @@ public class HelpCmdProcess extends BaseCmdProcess {
 						sb.append(bp.help());
 					}
 				}
-				this.getHandle().getSession().webwxsendmsg(sb.toString(),toUserID);
+				this.getHandle().getSession().sendTextMessage(sb.toString(),toUserID);
 			 }
 				
 			return true;
