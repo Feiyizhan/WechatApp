@@ -92,17 +92,17 @@ public class TulingUtil {
 		if(null !=data){
 			switch(data.getInt("code", -1)){
 			case CODE_TEXT:{ // 文本
-				sb.append(data.getString("text"));
+				sb.append(replaceTag(data.getString("text")));
 				break;
 			}
 			case CODE_URL :{ //URL
-				sb.append(data.getString("text"));
+				sb.append(replaceTag(data.getString("text")));
 				sb.append("\n");
 				sb.append(data.getString("url"));
 				break ;
 			}
 			case CODE_NEWS : {// 新闻
-				sb.append(data.getString("text"));
+				sb.append(replaceTag(data.getString("text")));
 				sb.append("\n");
 				JSONArray list = data.getJSONArray("list");
 				for(JSONValue val:list){
@@ -123,7 +123,7 @@ public class TulingUtil {
 				break ;
 			}
 			case CODE_MENU: {//菜谱
-				sb.append(data.getString("text"));
+				sb.append(replaceTag(data.getString("text")));
 				sb.append("\n");
 				JSONArray list = data.getJSONArray("list");
 				for(JSONValue val:list){
@@ -196,6 +196,21 @@ public class TulingUtil {
 		
 	}
 	
+	/**
+	 * 替换标签
+	 * @param str
+	 * @return
+	 */
+	public static String replaceTag(String str){
+		if(str!=null){
+			return str.replaceAll("<br>", "\n")
+					.replaceAll("<br/>", "\n");
+		}else{
+			return null ;
+		}
+	}
+	
+	
 	public static void main(String[] args){
 //		LOGGER.info(tuling("feiyizhan","红烧牛肉"));
 		LOGGER.debug(TULING_KEY);
@@ -203,4 +218,6 @@ public class TulingUtil {
 
        
 	}
+	
+	
 }
