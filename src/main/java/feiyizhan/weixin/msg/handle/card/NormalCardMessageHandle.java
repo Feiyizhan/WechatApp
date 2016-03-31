@@ -64,7 +64,7 @@ public class NormalCardMessageHandle extends CardMessageHandle {
 					String sendMsgUserName =UserUtil.getUserName(sendMsgUser);
 					
 					
-					String receiveMsgStr = "@"+groupOwnName+" "+
+					String receiveMsgStr = "@"+groupOwnName+" "+
 										"广告提醒，【"+sendMsgUserName+
 										"】在"+TimeKit.getCurrentTimeInString()+
 										"有发送广告嫌疑"+

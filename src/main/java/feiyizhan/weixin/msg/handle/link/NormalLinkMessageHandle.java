@@ -57,7 +57,7 @@ public class NormalLinkMessageHandle extends LinkMessageHandle {
 					//获取群主
 					JSONObject groupOwn = getSession().getGroupMemberUserByID(group, groupOwnID);
 					//获取群主名称
-					String groupOwnName = UserUtil.getUserName(groupOwn);
+					String groupOwnName = UserUtil.getDisplayName(groupOwn);
 					//获取消息发送者的ID
 					String sendMsgUserID = contents.get(0);
 					
@@ -68,7 +68,7 @@ public class NormalLinkMessageHandle extends LinkMessageHandle {
 					String sendMsgUserName =UserUtil.getUserName(sendMsgUser);
 					
 					
-					String receiveMsgStr = "@"+groupOwnName+" "+
+					String receiveMsgStr = "@"+groupOwnName+" "+
 										"广告提醒，【"+sendMsgUserName+
 										"】在"+TimeKit.getCurrentTimeInString()+
 										"有发送广告嫌疑"+
