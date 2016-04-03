@@ -39,7 +39,7 @@ public class ShowGroupDetailCmdProcess extends BaseCmdProcess {
 		sb.append("【显示明细】:显示明细  -- 显示当前群成员明细\n");
 		sb.append("【显示地域报告】:显示地域报告  -- 显示当前群成员地域报告\n");
 		sb.append("【显示未改名的群成员】:显示未改名的群成员  -- 显示当前群成员中未改名的清单\n");
-		sb.append("【显示不符合群名规则的群成员】:显示不符合群名规则的群成员 前缀  -- 显示当前群成员中未按照改名规则的改名的清单（前缀匹配）\n");
+		sb.append("【显示指定群名规则的群成员】:显示指定群名规则的群成员  正则表达式  -- 显示当前群成员中指定改名规则的改名的清单（正则匹配）\n");
 		return sb.toString();
 	}
 
@@ -73,7 +73,7 @@ public class ShowGroupDetailCmdProcess extends BaseCmdProcess {
 		}else if("显示未改名的群成员".equals(cmd))	{
 			this.getHandle().getSession().sendTextMessage(getGroupDoNotChangeNameDetail(this.getHandle().getSession().getGroup(toUserID)),toUserID);
 			return true;
-		}else if("显示不符合群名规则的群成员".equals(cmd))	{
+		}else if("显示指定群名规则的群成员".equals(cmd))	{
 			this.getHandle().getSession().sendTextMessage(getGroupNonConfirmNameDetail(this.getHandle().getSession().getGroup(toUserID),prefix),toUserID);
 			return true;
 		}else{
@@ -92,7 +92,7 @@ public class ShowGroupDetailCmdProcess extends BaseCmdProcess {
 			return true;
 		}else if("显示未改名的群成员".equals(cmd)){
 			return true;
-		}else if("显示不符合群名规则的群成员".equals(cmd)){
+		}else if("显示指定群名规则的群成员".equals(cmd)){
 			return true;
 		}else{
 			return false;
@@ -241,18 +241,19 @@ public class ShowGroupDetailCmdProcess extends BaseCmdProcess {
 	}
 	
 	/**
-	 * 显示有修改名称，但没有按规则修改名称的群成员
+	 * 显示有修改名称，并按照是否按规则改名来分类
 	 * @param group
 	 * @return
 	 */
-	private String getGroupNonConfirmNameDetail(JSONObject group,String prefix){
+	private String getGroupNonConfirmNameDetail(JSONObject group,String regex){
 		StringBuilder sb = new StringBuilder();
 		sb.append("当前群【");
 		sb.append(UserUtil.getUserName(group));
 		sb.append("】:\n");
 		JSONArray memberList = UserUtil.getGroupMemberList(group);
+		List<String> matchNames =  new ArrayList<String>();  //Unmatched
+		List<String> UnmatchNames =  new ArrayList<String>();  //Unmatched
 		
-		List<String> displayNames =  new ArrayList<String>();  //区域统计
 		for(JSONValue val:memberList){
 			JSONObject member = val.asObject();
 			
@@ -260,15 +261,20 @@ public class ShowGroupDetailCmdProcess extends BaseCmdProcess {
 			//统计名称
 			String displayName = UserUtil.getDisplayName(member)  ;//群里显示的名称
 			if(StringKit.isNotBlank(displayName)){
-				if(!displayName.startsWith("prefix")){
-					displayNames.add(UserUtil.getUserName(member));
+				if(!displayName.matches(regex)){
+					UnmatchNames.add(UserUtil.getUserName(member));
+				}else{
+					matchNames.add(UserUtil.getUserName(member));
 				}
 				
 			}
 			
 		}
-		sb.append(" 有【"+ displayNames.size()+"】个人有修改名称，但没有按规则修改名称。\n");
-		sb.append(" 分别是【"+ displayNames+"】。\n");
+		sb.append(" 有【"+ UnmatchNames.size()+"】个人有修改名称，但没有按规则修改名称。\n");
+		sb.append(" 分别是【"+ UnmatchNames+"】。\n");
+		sb.append(" =====分割线=====\n");
+		sb.append(" 有【"+ matchNames.size()+"】个人有修改名称，并符合改名规则。。\n");
+		sb.append(" 分别是【"+ matchNames+"】。\n");
 		return sb.toString();
 		
 		
