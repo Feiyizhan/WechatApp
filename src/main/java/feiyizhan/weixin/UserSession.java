@@ -637,7 +637,41 @@ public class UserSession {
 		JSONObject Msg = new JSONObject();
 		Msg.put("Type", 1);
 		Msg.put("Content", content);
-		Msg.put("FromUserName", User.getString("UserName"));
+		Msg.put("FromUserName", UserUtil.getUserID(User));
+		Msg.put("ToUserName", to);
+		Msg.put("LocalID", clientMsgId);
+		Msg.put("ClientMsgId", clientMsgId);
+		
+		body.put("BaseRequest", this.BaseRequest);
+		body.put("Msg", Msg);
+		
+		HttpRequest request = HttpRequest.post(url)
+				.header("Content-Type", "application/json;charset=utf-8")
+				.header("Cookie", this.cookie)
+				.send(body.toString());
+		
+		LOGGER.debug("[*] " + request);
+		request.body();
+		request.disconnect();
+	}
+	
+	
+	/**
+	 * 发送图片消息
+	 * @param content
+	 * @param to
+	 */
+	public void sendImageMessage(String content, String to) {
+		
+		String url = this.base_uri + "/webwxsendmsgimg?fun=async&f=json&pass_ticket=" + this.pass_ticket;
+		
+		JSONObject body = new JSONObject();
+		
+		String clientMsgId = DateKit.getCurrentUnixTime() + StringKit.getRandomNumber(5);
+		JSONObject Msg = new JSONObject();
+		Msg.put("Type", 3);
+		Msg.put("MediaId", content);
+		Msg.put("FromUserName", UserUtil.getUserID(User));
 		Msg.put("ToUserName", to);
 		Msg.put("LocalID", clientMsgId);
 		Msg.put("ClientMsgId", clientMsgId);
