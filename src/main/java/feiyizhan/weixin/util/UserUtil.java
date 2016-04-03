@@ -22,7 +22,7 @@ public class UserUtil {
 	/**
 	 * 获取用户名的关键字
 	 */
-	public static final List<String> NAMES_KEYS = Arrays.asList("RemarkName","NickName");
+	public static final List<String> NAMES_KEYS = Arrays.asList("DisplayName","RemarkName","NickName");
 
 	/**
 	 * 获取通讯录用户名，如果用户有备注名，返回备注名，没有返回用户名。
