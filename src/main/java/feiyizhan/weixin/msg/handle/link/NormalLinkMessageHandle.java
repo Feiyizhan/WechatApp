@@ -57,7 +57,7 @@ public class NormalLinkMessageHandle extends LinkMessageHandle {
 					//获取群主
 					JSONObject groupOwn = getSession().getGroupMemberUserByID(group, groupOwnID);
 					//获取群主名称
-					String groupOwnName = UserUtil.getDisplayName(groupOwn);
+					String groupOwnName = UserUtil.getUserName(groupOwn);
 					//获取消息发送者的ID
 					String sendMsgUserID = contents.get(0);
 					
