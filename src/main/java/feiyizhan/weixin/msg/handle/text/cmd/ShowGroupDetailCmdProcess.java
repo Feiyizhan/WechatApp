@@ -13,6 +13,7 @@ import blade.kit.logging.Logger;
 import blade.kit.logging.LoggerFactory;
 import feiyizhan.weixin.UserSession;
 import feiyizhan.weixin.msg.handle.text.CmdTextMessageHandle;
+import feiyizhan.weixin.util.StringUtil;
 import feiyizhan.weixin.util.UserUtil;
 
 /**
@@ -253,6 +254,10 @@ public class ShowGroupDetailCmdProcess extends BaseCmdProcess {
 		JSONArray memberList = UserUtil.getGroupMemberList(group);
 		List<String> matchNames =  new ArrayList<String>();  //Unmatched
 		List<String> UnmatchNames =  new ArrayList<String>();  //Unmatched
+		
+		regex = StringUtil.convertChineseToUnicodeValueString(regex); //中文字符转为Unicode值
+		
+		
 		
 		for(JSONValue val:memberList){
 			JSONObject member = val.asObject();
