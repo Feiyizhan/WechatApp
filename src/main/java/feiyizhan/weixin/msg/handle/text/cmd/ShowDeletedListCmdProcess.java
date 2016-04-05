@@ -54,7 +54,7 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 		if(cmds.length==2){
 			return false;
 		}else if(cmds.length==1){
-			if(!fromUserID.equals(toUserID)) return false;
+//			if(!fromUserID.equals(toUserID)) return false;
 			cmd = cmds[0];
 		}else{
 			return false;
@@ -64,6 +64,7 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 		}
 		
 		if("获取删除我的用户清单".equals(cmd)){
+			if(!fromUserID.equals(toUserID)) return false;
 			if(!this.getHandle().getControl().isBatchFlag()){
 				this.getHandle().getControl().setBatchFlag(true);
 				new Thread(){
@@ -100,13 +101,15 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 					
 					
 				}.start();
-			}else if("删除".equals(cmd)){
-				this.markDeleted(this.getHandle().getSession().getUserByID(toUserID, ""));
-				return true;
+
 			}else{
 				sendTextMessage("【系统消息】处理中。。。 \n",fromUserID);
 			}
 			
+			return true;
+		}else if("测试".equals(cmd)){
+			this.getHandle().getSession().sendEmoMessage(content, toUserID);
+//			this.markDeleted(this.getHandle().getSession().getUserByID(toUserID, ""));
 			return true;
 		}else{
 			return false;
@@ -119,7 +122,7 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 		// TODO 自动生成的方法存根
 		if("获取删除我的用户清单".equals(cmd)){
 			return true;
-		}else if("删除".equals(cmd)){
+		}else if("测试".equals(cmd)){
 			return true;
 		}else{
 			return false;
