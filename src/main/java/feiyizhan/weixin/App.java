@@ -20,6 +20,7 @@ import blade.kit.json.JSONValue;
 import blade.kit.logging.Logger;
 import blade.kit.logging.LoggerFactory;
 import feiyizhan.api.tuling.TulingUtil;
+import feiyizhan.rpc.RpcClient;
 import feiyizhan.weixin.util.CookieUtil;
 import feiyizhan.weixin.util.JSONUtil;
 import feiyizhan.weixin.util.JSUtil;
@@ -105,6 +106,8 @@ public class App {
 					if(arr[0] == 1100){
 						LOGGER.info("[*] 你在手机上登出了微信，再见");
 						appControl.setBatchFlag(false);
+						RpcClient.RPC.setLoginedUser(sessionID, null);
+						RpcClient.RPC.setUUID(sessionID, null);
 						arr = userSession.syncCheck();
 						is_exit=true;
 					}
@@ -156,7 +159,10 @@ public class App {
 				
 				LOGGER.debug("[*] sessionID："+app.sessionID );
 				
-				app.appControl.sendUUID(uuid,app.sessionID);
+				if(!app.appControl.sendUUID(uuid,app.sessionID)){  //发送UUID
+					LOGGER.info("RPC服务器通讯失败。");
+					return ;
+				}
 				
 				if(!app.userSession.login()){
 					LOGGER.info("微信登录失败");
@@ -183,7 +189,8 @@ public class App {
 				LOGGER.info("[*] 微信初始化成功");
 				
 				if(!app.appControl.saveLoginUser(app.sessionID)){
-					LOGGER.info("[*] 保存当前登录用户信息成功");
+					LOGGER.info("[*] 保存登录信息失败。");
+					return ;
 				}
 				
 					
@@ -211,6 +218,7 @@ public class App {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			LOGGER.error("[*]系统异常退出，原因："+e.getMessage());
+			System.exit(0);
 		}
 	}
 	
