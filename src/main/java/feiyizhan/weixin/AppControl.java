@@ -20,6 +20,7 @@ import blade.kit.json.JSONValue;
 import blade.kit.logging.Logger;
 import blade.kit.logging.LoggerFactory;
 import feiyizhan.api.tuling.TulingUtil;
+import feiyizhan.rpc.RpcClient;
 import feiyizhan.weixin.msg.handle.MessageHandleImpl;
 import feiyizhan.weixin.msg.handle.card.NormalCardMessageHandle;
 import feiyizhan.weixin.msg.handle.link.NormalLinkMessageHandle;
@@ -251,20 +252,7 @@ public class AppControl {
 	 * @return
 	 */
 	public boolean sendUUID(String UUID,String sessionID){
-		String file = "./WechatApp/UUID/"+sessionID+"/system.txt";
-		try {
-			if(FileKit.exist(file)){
-				FileKit.delete(file);
-			}
-			if(FileKit.createFile(file,true)){
-				FileUtils.write(new File(file), "UUID : "+UUID, "UTF-8");
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			LOGGER.error(e.getMessage());
-		}
-
-		return true;
+		return RpcClient.RPC.setUUID(sessionID, UUID); //设置UUID，失败则直接退出
 	}
 	
 	/**
@@ -273,24 +261,7 @@ public class AppControl {
 	 * @return
 	 */
 	public boolean saveLoginUser(String sessionID){
-		if(this.userSession.User!=null){
-			String file = "./WechatApp/UUID/"+sessionID+"/user.txt";
-//			String userID =UserUtil.getUserID(this.userSession.User);
-//			String userName =UserUtil.getUserRemarkName(this.userSession.User);
-			try {
-				if(FileKit.exist(file)){
-					FileKit.delete(file);
-				}
-				if(FileKit.createFile(file,true)){
-					FileUtils.write(new File(file), this.userSession.User.toString(), "UTF-8");
-//					FileUtils.write(new File(file), "userName : "+userName, "UTF-8");
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				LOGGER.error(e.getMessage());
-			}
-		}
-		return true;
+		return RpcClient.RPC.setLoginedUser(sessionID, this.userSession.User.toString());
 	}
 	
 	
