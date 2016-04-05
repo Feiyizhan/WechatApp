@@ -135,77 +135,82 @@ public class App {
 		}, "listenMsgMode").start();
 	}
 	
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args){
 
-		LOGGER.info("[*] App 启动");
+		try {
+			LOGGER.info("[*] App 启动");
 
-		App app = new App();
-		String uuid = app.userSession.getUUID();
-		if(null == uuid){
-			LOGGER.info("[*] uuid获取失败");
-		} else { 
-			if(args!=null && args.length==1 && StringKit.isNotBlank(args[0])){  //后台模式
-				app.sessionID = args[0].trim().toUpperCase();
+			App app = new App();
+			String uuid = app.userSession.getUUID();
+			if(null == uuid){
+				LOGGER.info("[*] uuid获取失败");
+			} else { 
+				if(args!=null && args.length==1 && StringKit.isNotBlank(args[0])){  //后台模式
+					app.sessionID = args[0].trim().toUpperCase();
 
-			}
-			
-			if(app.sessionID.equals("system")){ //前台模式
-				app.showQrCode();
-			}
-			
-			LOGGER.debug("[*] sessionID："+app.sessionID );
-			
-			app.appControl.sendUUID(uuid,app.sessionID);
-			
-			if(!app.userSession.login()){
-				LOGGER.info("微信登录失败");
-				if(app.sessionID.equals("system")){ //前台模式
-					app.closeQrWindow();
 				}
-				return;
-			}else{
-				if(app.sessionID.equals("system")){ //前台模式
-					app.closeQrWindow();
-				}
-			}
-			
-
-
-			
-			LOGGER.info("[*] 微信登录成功");
-			
-			if(!app.userSession.wxInit()){
-				LOGGER.info("[*] 微信初始化失败");
-				return;
-			}
-			
-			LOGGER.info("[*] 微信初始化成功");
-			
-			if(!app.appControl.saveLoginUser(app.sessionID)){
-				LOGGER.info("[*] 保存当前登录用户信息成功");
-			}
-			
 				
-			if(!app.userSession.wxStatusNotify()){
-				LOGGER.info("[*] 开启状态通知失败");
-				return;
-			}
-			
-			LOGGER.info("[*] 开启状态通知成功");
-			
-			if(!app.userSession.getContact()){
-				LOGGER.info("[*] 获取联系人失败");
-				return;
-			}
+				if(app.sessionID.equals("system")){ //前台模式
+					app.showQrCode();
+				}
+				
+				LOGGER.debug("[*] sessionID："+app.sessionID );
+				
+				app.appControl.sendUUID(uuid,app.sessionID);
+				
+				if(!app.userSession.login()){
+					LOGGER.info("微信登录失败");
+					if(app.sessionID.equals("system")){ //前台模式
+						app.closeQrWindow();
+					}
+					return;
+				}else{
+					if(app.sessionID.equals("system")){ //前台模式
+						app.closeQrWindow();
+					}
+				}
+				
 
-			
-			//发送帮助消息
+
+				
+				LOGGER.info("[*] 微信登录成功");
+				
+				if(!app.userSession.wxInit()){
+					LOGGER.info("[*] 微信初始化失败");
+					return;
+				}
+				
+				LOGGER.info("[*] 微信初始化成功");
+				
+				if(!app.appControl.saveLoginUser(app.sessionID)){
+					LOGGER.info("[*] 保存当前登录用户信息成功");
+				}
+				
+					
+				if(!app.userSession.wxStatusNotify()){
+					LOGGER.info("[*] 开启状态通知失败");
+					return;
+				}
+				
+				LOGGER.info("[*] 开启状态通知成功");
+				
+				if(!app.userSession.getContact()){
+					LOGGER.info("[*] 获取联系人失败");
+					return;
+				}
+
+				
+				//发送帮助消息
 //			app.userSession.webwxsendmsg(app.appControl.getHelpContent(), app.userSession.User.getString("UserName"));
-			
-			// 监听消息
-			app.listenMsgMode();
-			
-			//mvn exec:java -Dexec.mainClass="me.biezhi.weixin.App"
+				
+				// 监听消息
+				app.listenMsgMode();
+				
+				//mvn exec:java -Dexec.mainClass="me.biezhi.weixin.App"
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			LOGGER.error("[*]系统异常退出，原因："+e.getMessage());
 		}
 	}
 	
