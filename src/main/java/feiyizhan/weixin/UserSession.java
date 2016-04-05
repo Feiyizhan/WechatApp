@@ -690,6 +690,50 @@ public class UserSession {
 	}
 	
 	/**
+	 * 发送表情消息
+	 * @param conten
+	 * @param to
+	 */
+	public void sendEmoMessage(String content,String to){
+		String url = this.base_uri + "/webwxsendemoticon?fun=sys&pass_ticket=" + this.pass_ticket; 
+
+		JSONObject body = new JSONObject();
+		
+		String clientMsgId = DateKit.getCurrentUnixTime() + StringKit.getRandomNumber(5);
+		JSONObject Msg = new JSONObject();
+		Msg.put("Type",47);
+		Msg.put("EmojiFlag", 2);
+		Msg.put("EMoticonMd5", "8690f2ec5676b9d2d70f7cba012e772e"); 
+		Msg.put("FromUserName", UserUtil.getUserID(User));
+		Msg.put("ToUserName", to);
+		Msg.put("LocalID", clientMsgId);
+		Msg.put("ClientMsgId", clientMsgId);
+		
+		body.put("BaseRequest", this.BaseRequest);
+		body.put("Msg", Msg);
+		
+		
+		HttpRequest request = HttpRequest.post(url)
+				.header("Accept", "application/json, text/plain, */*")
+//				.header("Accept-Encoding", "gzip, deflate")
+				.header("Cache-Control", "no-cache")
+				.header("Connection", "Keep-Alive")
+				.header("Content-Type", "application/json;charset=utf-8")
+				
+				.header("Cookie", this.cookie)
+				.send(body.toString());
+		LOGGER.debug("[*] " + cookie);
+		LOGGER.debug("[*] " + body.toString());
+		LOGGER.debug("[*] " + request);
+		LOGGER.debug(request.body());
+		request.disconnect();
+		
+		
+		
+		
+	}
+	
+	/**
 	 * 获取最新消息
 	 */
 	public JSONObject webwxsync(){
