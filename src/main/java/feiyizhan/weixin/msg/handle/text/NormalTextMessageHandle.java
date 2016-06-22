@@ -81,10 +81,10 @@ public class NormalTextMessageHandle extends TextMesageHandle {
 				}
 				for(String str:getControl().keyWordList){
 					if(content.indexOf(str)>=0){
-						getSession().sendTextMessage(
+						sendSysTextMessage(
 							"【重要消息提醒】：\n"+
 							"来自【"+fromUserName+"】的消息【"+content.replace("<br/>", "\n")+"】"
-							, currUserID);
+							);
 						break;
 					}
 				}

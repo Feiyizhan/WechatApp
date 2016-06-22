@@ -52,7 +52,7 @@ public class ShowStatusCmdProcess extends BaseCmdProcess {
 		}
 		
 		if("显示状态".equals(cmd)){
-			this.getHandle().getSession().sendTextMessage(this.getHandle().getControl().getStatus(),fromUserID);
+			this.getHandle().sendSysTextMessage(this.getHandle().getControl().getStatus());
 			return true;	
 		}else{
 			return false;

@@ -64,6 +64,14 @@ public abstract class BaseMessageHandle implements MessageHandleImpl {
 		return false;
 	}
 	
+	/**
+	 * 发送系统文本消息
+	 * @param content
+	 */
+	public void sendSysTextMessage(String content){
+		getSession().sendTextMessage(content,getControl().systemReceiver);
+	}
+	
 	
 	/**
 	 * 检测消息,检测通过返回true

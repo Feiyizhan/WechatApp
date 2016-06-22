@@ -75,27 +75,27 @@ public class AutoReceiveUserCmdProcess extends BaseCmdProcess {
 						this.getHandle().getControl().AutoReceiveUserList.add(obj);
 					}
 				}
-				this.getHandle().getSession().sendTextMessage("已设置自动答复所有人和活跃群的消息",toUserID);
+				this.getHandle().sendSysTextMessage("已设置自动答复所有人和活跃群的消息");
 				
 			}else{
 				if (null!=user){
 					UserUtil.add(this.getHandle().getControl().AutoReceiveUserList, user);
-					this.getHandle().getSession().sendTextMessage("设置【"+name+"】的消息自动答复成功",toUserID);	
+					this.getHandle().sendSysTextMessage("设置【"+name+"】的消息自动答复成功");	
 				}else{
-					this.getHandle().getSession().sendTextMessage("你还没有【"+name+"】这个好友/群",fromUserID);
+					this.getHandle().sendSysTextMessage("你还没有【"+name+"】这个好友/群");
 				}
 			}
 			return true ;
 		}else if("删除自动答复".equals(cmd)){
 			if(all){
 				this.getHandle().getControl().AutoReceiveUserList = new JSONArray();
-				this.getHandle().getSession().sendTextMessage("已取消自动答复所有人和活跃群的消息",toUserID);
+				this.getHandle().sendSysTextMessage("已取消自动答复所有人和活跃群的消息");
 			}else{
 				if (null!=user){
 					UserUtil.remove(this.getHandle().getControl().AutoReceiveUserList, user);
-					this.getHandle().getSession().sendTextMessage("取消【"+name+"】的消息自动答复成功",toUserID);
+					this.getHandle().sendSysTextMessage("取消【"+name+"】的消息自动答复成功");
 				}else{
-					this.getHandle().getSession().sendTextMessage("你还没有【"+name+"】这个好友/群",fromUserID);
+					this.getHandle().sendSysTextMessage("你还没有【"+name+"】这个好友/群");
 				}
 			}
 			return true;
@@ -103,9 +103,9 @@ public class AutoReceiveUserCmdProcess extends BaseCmdProcess {
 
 			if (null!=user){
 				UserUtil.add(this.getHandle().getControl().AutoReceiveUserList, user);
-				this.getHandle().getSession().sendTextMessage("设置【"+name+"】的消息自动答复成功",toUserID);
+				this.getHandle().sendSysTextMessage("设置【"+name+"】的消息自动答复成功");
 			}else{
-				this.getHandle().getSession().sendTextMessage("你还没有【"+name+"】这个好友/群",fromUserID);
+				this.getHandle().sendSysTextMessage("你还没有【"+name+"】这个好友/群");
 			}
 			
 			return true;
@@ -113,9 +113,9 @@ public class AutoReceiveUserCmdProcess extends BaseCmdProcess {
 
 			if (null!=user){
 				UserUtil.remove(this.getHandle().getControl().AutoReceiveUserList, user);
-				this.getHandle().getSession().sendTextMessage("取消【"+name+"】的消息自动答复成功",toUserID);
+				this.getHandle().sendSysTextMessage("取消【"+name+"】的消息自动答复成功");
 			}else{
-				this.getHandle().getSession().sendTextMessage("你还没有【"+name+"】这个好友/群",fromUserID);
+				this.getHandle().sendSysTextMessage("你还没有【"+name+"】这个好友/群");
 			}
 			
 			return true;

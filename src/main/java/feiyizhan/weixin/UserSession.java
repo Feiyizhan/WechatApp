@@ -1,10 +1,14 @@
 package feiyizhan.weixin;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import blade.kit.DateKit;
 import blade.kit.StringKit;
@@ -49,6 +53,7 @@ public class UserSession {
 	public int tip = 0;
 	public String base_uri, redirect_uri, webpush_url = "https://webpush2.weixin.qq.com/cgi-bin/mmwebwx-bin";
 	
+	public int media_count =0 ;  //多媒体发送次数
 	
 
 	/**
@@ -236,6 +241,7 @@ public class UserSession {
 						this.SyncKey = jsonObject.getJSONObject("SyncKey");
 						this.User = jsonObject.getJSONObject("User");
 						
+						
 						StringBuffer synckey = new StringBuffer();
 						
 						JSONArray list = SyncKey.getJSONArray("List");
@@ -247,7 +253,8 @@ public class UserSession {
 						this.synckey = synckey.substring(1);
 						
 						this.sendTextMessage("登录成功，查询命令，请输入【帮助】。", UserUtil.getUserID(this.User));
-//						
+						this.sendTextMessage("登录成功，查询命令，请输入【帮助】。", "filehelper");  //追加向文件传输助手发送消息，用于支持不能自己给自己发消息的微信号
+						this.sendTextMessage("如果在网页版微信上无法自己给自己发送消息，则请使用【修改系统消息接收者为 文件传输助手】命令来修改默认的系统消息接收者。", "filehelper"); 
 //						if(null != BaseResponse){
 //							for(int i=0, len=MemberList.size(); i<len; i++){
 //								JSONObject contact = this.MemberList.getJSONObject(i);
@@ -570,7 +577,6 @@ public class UserSession {
 						
 						String report = this.getUserReport();
 						LOGGER.info("[*]",report);
-						this.sendTextMessage(report, UserUtil.getUserID(this.User));
 						
 						
 						return true;
@@ -622,6 +628,10 @@ public class UserSession {
 		return arr;
 	}
 	
+	
+	
+	
+	
 	/**
 	 * 发送文本消息
 	 * @param content
@@ -654,6 +664,167 @@ public class UserSession {
 		request.body();
 		request.disconnect();
 	}
+	
+
+	
+	
+	
+	
+	/**
+	 * 上传微信多媒体数据
+	 * @param fileName
+	 * @return
+	 */
+	public JSONObject webwxuploadmedia(String fileName){
+		String url = "https://file.wx.qq.com/cgi-bin/mmwebwx-bin/webwxuploadmedia?f=json";
+		media_count +=1;
+		File file = FileUtils.getFile(fileName);
+		//文件名
+		String file_name = FilenameUtils.getName(fileName);
+		
+		//MIME格式
+		//mime_type = application/pdf, image/jpeg, image/png, etc.
+		String mime_type = "image/png";	
+		//微信识别的文档格式，微信服务器应该只支持两种类型的格式。pic和doc
+	    //pic格式，直接显示。doc格式则显示为文件。
+		String media_type ="pic";
+		//上一次修改日期
+		String lastModifieDate = "Thu Apr 06 2016 00:55:10 GMT+0800 (CST)";
+		//文件大小
+		long file_size =FileUtils.sizeOf(file);
+		//PassTicket
+		
+		//clientMediaId
+		String clientMsgId = DateKit.getCurrentUnixTime() + StringKit.getRandomNumber(5);
+		//webwx_data_ticket
+		String webwx_data_ticket = "";
+		
+		JSONObject uploadmediarequest = new JSONObject();
+		uploadmediarequest.put("BaseRequest", this.BaseRequest);
+		uploadmediarequest.put("ClientMediaId",clientMsgId);
+		uploadmediarequest.put("TotalLen", file_size);
+		uploadmediarequest.put("StartPos", 0);
+		uploadmediarequest.put("DataLen", file_size);
+		uploadmediarequest.put("MediaType", 4);
+		
+
+//				
+//				multipart_encoder = MultipartEncoder(
+//						fields = {
+//							'id': 'WU_FILE_' + str(self.media_count), 
+//							'name': file_name,
+//							'type': mime_type,
+//							'lastModifieDate': lastModifieDate,
+//							'size': str(file_size),
+//							'mediatype': media_type,
+//							'uploadmediarequest': uploadmediarequest,
+//							'webwx_data_ticket': webwx_data_ticket,
+//							'pass_ticket': this.pass_ticket,
+//							'filename': (file_name, open(file_name, 'rb'), mime_type.split('/')[1])
+//						},
+//						boundary = '-----------------------------1575017231431605357584454111'
+//					)
+		String boundary="------WebKitFormBoundaryT2NGayLGOFMwSBwT";
+		StringBuilder sb = new StringBuilder();
+		sb.append(boundary).append("\n")
+		  .append("Content-Disposition: form-data; name=\"id\"").append("\n").append("\n")
+		  .append("WU_FILE_").append(media_count).append("\n")
+		  
+		  .append(boundary).append("\n")
+		  .append("Content-Disposition: form-data; name=\"name\"").append("\n").append("\n")
+		  .append(file_name).append("\n")
+		  
+		  .append(boundary).append("\n")
+		  .append("Content-Disposition: form-data; name=\"type\"").append("\n").append("\n")
+		  .append(mime_type).append("\n")
+		  
+		  .append(boundary).append("\n")
+		  .append("Content-Disposition: form-data; name=\"lastModifiedDate\"").append("\n").append("\n")
+		  .append(lastModifieDate).append("\n")
+		  
+		  
+		  .append(boundary).append("\n")
+		  .append("Content-Disposition: form-data; name=\"size\"").append("\n").append("\n")
+		  .append(file_size).append("\n")
+		  
+		  .append(boundary).append("\n")
+		  .append("Content-Disposition: form-data; name=\"mediatype\"").append("\n").append("\n")
+		  .append(media_type).append("\n")
+		  
+		  .append(boundary).append("\n")
+		  .append("Content-Disposition: form-data; name=\"uploadmediarequest\"").append("\n").append("\n")
+		  .append(uploadmediarequest).append("\n")
+		  
+		  .append(boundary).append("\n")
+		  .append("Content-Disposition: form-data; name=\"webwx_data_ticket\"").append("\n").append("\n")
+		  .append(webwx_data_ticket).append("\n")
+		  
+		  
+		  .append(boundary).append("\n")
+		  .append("Content-Disposition: form-data; name=\"pass_ticket\"").append("\n").append("\n")
+		  .append(pass_ticket).append("\n")
+		  
+		  .append(boundary).append("\n")
+		  .append("Content-Disposition: form-data; name=\"filename\";").append("filename=\"").append(file_name).append("\"").append("\n")
+		  .append("Content-Type: image/png").append("\n")
+		  .append("\n")
+		  .append("\n")
+		  
+		  .append(boundary).append("--\n");
+		
+		
+		
+//					headers = {
+//						'Host': 'file2.wx.qq.com',
+//						'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:42.0) Gecko/20100101 Firefox/42.0',
+//						'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+//						'Accept-Language': 'en-US,en;q=0.5',
+//						'Accept-Encoding': 'gzip, deflate',
+//						'Referer': 'https://wx2.qq.com/',
+//						'Content-Type': multipart_encoder.content_type,
+//						'Origin': 'https://wx2.qq.com',
+//						'Connection': 'keep-alive',
+//						'Pragma': 'no-cache',
+//						'Cache-Control': 'no-cache'
+//					}
+
+				HttpRequest request = HttpRequest.post(url)
+						.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+						.header("Accept", "*/*")
+						.header("Accept-Language", "zh-CN,zh;q=0.8")
+						.header("Accept-Encoding", "gzip, deflate")
+						.header("Content-Type", "multipart/form-data;boundary=----WebKitFormBoundaryT2NGayLGOFMwSBwT")  // 使用multipart/form-data发送POST请求
+						.header("Host", "file.wx.qq.com")
+						.header("Origin", "https://wx.qq.com")
+						.header("Referer", "https://wx.qq.com/")
+						.header("Connection", "keep-alive")
+						.header("Pragma", "no-cache")
+						.header("Cache-Control", "no-cache")
+						.send(sb.toString());
+						
+					String res = request.body();
+					request.disconnect();
+					
+					if(StringKit.isBlank(res)){
+						return null;
+					}
+					
+					JSONObject jsonObject = JSON.parse(res).asObject();
+					JSONObject BaseResponse = jsonObject.getJSONObject("BaseResponse");
+					if(null != BaseResponse){
+						int ret = BaseResponse.getInt("Ret", -1);
+						if(ret!=-1){
+							return jsonObject;
+						}else{
+							return null;
+						}
+					}else{
+						return null;
+					}
+		
+		
+	}
+	
 	
 	
 	/**
@@ -1023,7 +1194,7 @@ public class UserSession {
 				int sex = contact.getInt("Sex", -1);
 				int verifyFlag = contact.getInt("VerifyFlag", -1);
 				String userID =UserUtil.getUserID(contact);
-				if(SpecialUsers.contains(userID)){  //特殊联系人不处理
+				if(isSpaciaUser(userID)){  //特殊联系人不处理
 					LOGGER.info("[*]特殊联系人"+contact);
 					continue;
 				}

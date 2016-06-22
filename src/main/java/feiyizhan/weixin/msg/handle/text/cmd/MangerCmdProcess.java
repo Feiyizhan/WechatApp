@@ -66,18 +66,18 @@ public class MangerCmdProcess extends BaseCmdProcess {
 		if("增加主控".equals(cmd)){
 			if(null!=manger){
 				UserUtil.add(this.getHandle().getControl().MangerUsrList, manger);
-				this.getHandle().getSession().sendTextMessage("增加【"+name+"】主控成功",toUserID);
+				this.getHandle().sendSysTextMessage("增加【"+name+"】主控成功");
 			}else{
-				this.getHandle().getSession().sendTextMessage("【"+name+"】不在联系人清单",fromUserID);
+				this.getHandle().sendSysTextMessage("【"+name+"】不在联系人清单");
 			}
 			return true;
 			
 		}else if("删除主控".equals(cmd)){
 			if(null!=manger){
 				UserUtil.remove(this.getHandle().getControl().MangerUsrList, manger);
-				this.getHandle().getSession().sendTextMessage("删除【"+name+"】主控成功",toUserID);
+				this.getHandle().sendSysTextMessage("删除【"+name+"】主控成功");
 			}else{
-				this.getHandle().getSession().sendTextMessage("【"+name+"】不在联系人清单",fromUserID);
+				this.getHandle().sendSysTextMessage("【"+name+"】不在联系人清单");
 			}
 			return true;
 		}else{

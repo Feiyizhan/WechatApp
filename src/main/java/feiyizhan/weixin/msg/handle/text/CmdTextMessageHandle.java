@@ -14,6 +14,7 @@ import feiyizhan.weixin.UserSession;
 import feiyizhan.weixin.msg.handle.text.cmd.AutoReceiveSwitchCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.AutoReceiveUserCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.BaseCmdProcess;
+import feiyizhan.weixin.msg.handle.text.cmd.ChangeSystemReceiverCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.ForwordMessageSwitchCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.HelpCmdProcess;
 import feiyizhan.weixin.msg.handle.text.cmd.MangerCmdProcess;
@@ -61,6 +62,7 @@ public class CmdTextMessageHandle extends TextMesageHandle {
 		
 		this.processList.add(new ReFlashUserCmdProcess(this)); //注册更新当前用户信息命令处理模块
 		
+		this.processList.add(new ChangeSystemReceiverCmdProcess(this)); //注册修改系统消息接收者命令处理模块
 	}
 	
 	/**

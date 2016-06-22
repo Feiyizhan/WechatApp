@@ -25,6 +25,7 @@ import feiyizhan.weixin.util.CookieUtil;
 import feiyizhan.weixin.util.JSONUtil;
 import feiyizhan.weixin.util.JSUtil;
 import feiyizhan.weixin.util.Matchers;
+import feiyizhan.weixin.util.UserUtil;
 
 /**
  * Hello world!
@@ -96,6 +97,7 @@ public class App {
 			public void run() {
 				LOGGER.info("[*] 进入消息监听模式 ...");
 				int playWeChat = 0;
+				int redEnvelope =0;
 				boolean is_exit = false;
 				while(!is_exit){
 					
@@ -117,8 +119,11 @@ public class App {
 							JSONObject data = userSession.webwxsync();
 							appControl.handleMsg(data);
 						} else if(arr[1] == 6){
+							redEnvelope+=1;
+							LOGGER.info("[*] 收到疑似红包消息{}次", redEnvelope);
 							JSONObject data = userSession.webwxsync();
 							appControl.handleMsg(data);
+							
 						} else if(arr[1] == 7){
 							playWeChat += 1;
 							LOGGER.info("[*] 你在手机上玩微信被我发现了{}次", playWeChat);
@@ -185,6 +190,9 @@ public class App {
 					LOGGER.info("[*] 微信初始化失败");
 					return;
 				}
+				//设置默认的消息接收者为本人。
+				app.appControl.setSystemReceiver(UserUtil.getUserID(app.userSession.User));
+				
 				
 				LOGGER.info("[*] 微信初始化成功");
 				
@@ -205,6 +213,8 @@ public class App {
 					LOGGER.info("[*] 获取联系人失败");
 					return;
 				}
+				
+				app.appControl.sendAfterLogedMessage();
 
 				
 				//发送帮助消息

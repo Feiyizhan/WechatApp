@@ -47,11 +47,11 @@ public class RemindSwitchCmdProess extends BaseCmdProcess {
 		
 		if("开启关键字提醒".equals(cmd)){
 			this.getHandle().getControl().keyWorkFlag=true;
-			this.getHandle().getSession().sendTextMessage("已开启关键字提醒，如果要关闭，请输入【关闭关键字提醒】",fromUserID);
+			this.getHandle().sendSysTextMessage("已开启关键字提醒，如果要关闭，请输入【关闭关键字提醒】");
 			return true;
 		}else if("关闭关键字提醒".equals(cmd)){
 			this.getHandle().getControl().keyWorkFlag=false;
-			this.getHandle().getSession().sendTextMessage("已关闭关键字提醒，如果要开启，请输入【开启关键字提醒】",fromUserID);
+			this.getHandle().sendSysTextMessage("已关闭关键字提醒，如果要开启，请输入【开启关键字提醒】");
 			return true;
 		}else{
 			return false;

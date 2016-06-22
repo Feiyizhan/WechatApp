@@ -50,12 +50,12 @@ public class AutoReceiveSwitchCmdProcess extends BaseCmdProcess {
 		
 		if("开启自动答复".equals(cmd)){
 			this.getHandle().getControl().autoReceiveFlag=true;
-			this.getHandle().getSession().sendTextMessage("已开启自动答复，如果要关闭，请输入【关闭自动答复】",fromUserID);
+			this.getHandle().sendSysTextMessage("已开启自动答复，如果要关闭，请输入【关闭自动答复】");
 			return true;
 
 		}else if("关闭自动答复".equals(cmd)){
 			this.getHandle().getControl().autoReceiveFlag=false;
-			this.getHandle().getSession().sendTextMessage("已关闭自动答复，如果要开启，请输入【开启自动答复】",fromUserID);
+			this.getHandle().sendSysTextMessage("已关闭自动答复，如果要开启，请输入【开启自动答复】");
 			return true;
 			
 		}else{

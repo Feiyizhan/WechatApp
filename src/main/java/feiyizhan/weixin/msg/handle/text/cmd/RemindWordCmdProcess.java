@@ -54,11 +54,11 @@ public class RemindWordCmdProcess extends BaseCmdProcess {
 			if(!this.getHandle().getControl().keyWordList.contains(val)){
 				this.getHandle().getControl().keyWordList.add(val);
 			}
-			this.getHandle().getSession().sendTextMessage("增加提醒关键字成功。当前关键字清单：\n"+this.getHandle().getControl().keyWordList.toString(),fromUserID);
+			this.getHandle().sendSysTextMessage("增加提醒关键字成功。当前关键字清单：\n"+this.getHandle().getControl().keyWordList.toString());
 			return true;
 		}else if("删除提醒关键字".equals(cmd)){
 			this.getHandle().getControl().keyWordList.remove(val);
-			this.getHandle().getSession().sendTextMessage("删除提醒关键字成功。当前关键字清单：\n"+this.getHandle().getControl().keyWordList.toString(),fromUserID);
+			this.getHandle().sendSysTextMessage("删除提醒关键字成功。当前关键字清单：\n"+this.getHandle().getControl().keyWordList.toString());
 			return true;
 		}else{
 			return false;

@@ -42,6 +42,11 @@ public class AppControl {
 	public JSONObject ToolsGroup = null;
 	
 	/**
+	 * 系统消息接受者
+	 */
+	public String systemReceiver=null;
+	
+	/**
 	 * 自动答复用户清单（包括群）
 	 */
 	public JSONArray AutoReceiveUserList = new JSONArray();
@@ -198,7 +203,14 @@ public class AppControl {
 		}
 	}
 	
-
+	/**
+	 * 发送登录成功之后的消息
+	 */
+	public void sendAfterLogedMessage(){
+		userSession.sendTextMessage(userSession.getUserReport(), systemReceiver);
+	}
+	
+	
 	
 	/**
 	 * 返回状态
@@ -208,6 +220,7 @@ public class AppControl {
 		StringBuilder sb = new StringBuilder();
 		sb.append("当前登录用户【 "+UserUtil.getUserName(userSession.User)+"】\n");
 		sb.append("当前用户有【"+userSession.MemberList.size()+"】个联系人\n");
+		sb.append(userSession.getUserReport());
 		int groupCount =0;
 		int otherCount =0;
 		for(JSONValue val:userSession.GrouptList){
@@ -245,6 +258,8 @@ public class AppControl {
 	}
 	
 	
+	
+	
 	/**
 	 * 发送UUID到其他系统
 	 * @param UUID
@@ -262,6 +277,14 @@ public class AppControl {
 	 */
 	public boolean saveLoginUser(String sessionID){
 		return RpcClient.RPC.setLoginedUser(sessionID, this.userSession.User.toString());
+	}
+
+	/**
+	 * 设置系统消息接受者
+	 * @param systemReceiver
+	 */
+	public void setSystemReceiver(String systemReceiver) {
+		this.systemReceiver = systemReceiver;
 	}
 	
 	

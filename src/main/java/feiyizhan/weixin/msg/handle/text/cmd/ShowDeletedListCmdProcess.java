@@ -268,7 +268,7 @@ public class ShowDeletedListCmdProcess extends BaseCmdProcess {
 	 * @param id
 	 */
 	private void sendTextMessage(String msg,String id){
-		getHandle().getSession().sendTextMessage(msg,id);
+		getHandle().sendSysTextMessage(msg);
 	}
 	
 	/**
